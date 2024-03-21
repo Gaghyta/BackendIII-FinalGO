@@ -1,6 +1,6 @@
 package odontologos
 
-import "github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
+import "github.com/Gaghyta/BackendIIIFinalGO/internal/domains/odontologos"
 
 type Service interface {
 	GetByID(id int) (odontologos.Odontologos, error)

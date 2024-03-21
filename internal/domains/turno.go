@@ -1,4 +1,4 @@
-package turnos
+package domains
 
 type Turno struct {
 	TurnosId           int    `json:"turnos_id"`

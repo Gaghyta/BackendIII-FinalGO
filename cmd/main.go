@@ -9,7 +9,7 @@ import (
 
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 
-	"github.com/Gaghyta/BackendIIIFinalGO/cmd/handler"
+	"BackendIIIFinalGo/cmd/server/handler"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	//"github.com/go-sql-driver/mysql"
