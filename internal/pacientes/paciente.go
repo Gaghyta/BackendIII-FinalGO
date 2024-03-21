@@ -1,6 +1,6 @@
 package domains
 
-type Pacientes struct {
+type Paciente struct {
 	PacienteID        int    `json:"paciente_id"`
 	NombrePaciente    string `json:"nombre_paciente"`
 	ApellidoPaciente  string `json:"apellido_paciente"`

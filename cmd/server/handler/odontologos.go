@@ -4,8 +4,8 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
-	"github.com/bootcamp-go/consignas-go-db.git/pkg/web"
+	"github.com/Gaghyta/BackendIII-FinalGO/internal/domains/odontologos"
+	"github.com/Gaghyta/BackendIII-FinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
