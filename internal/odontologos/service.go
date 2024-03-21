@@ -40,14 +40,14 @@ func (s *service) Update(id int, uO domains.Odontologo) (domains.Odontologo, err
 	if err != nil {
 		return domains.Odontologo{}, err
 	}
-	if uO.Name != "" {
-		o.Name = uO.Name
+	if uO.NombreOdontologo != "" {
+		o.NombreOdontologo = uO.NombreOdontologo
 	}
 	if uO.ApellidoOdontologo != "" {
 		o.ApellidoOdontologo = uO.ApellidoOdontologo
 	}
-	if uO.matricula != "" {
-		o.matricula = uO.matricula
+	if uO.Matricula != "" {
+		o.Matricula = uO.Matricula
 	}
 	o, err = s.r.Update(id, o)
 	if err != nil {

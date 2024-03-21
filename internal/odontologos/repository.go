@@ -39,7 +39,7 @@ func (r *repository) GetByID(id int) (domains.Odontologo, error) {
 
 func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	if !r.storage.Exists(o.Matricula) {
-		return domains.Odontologo{}, errors.New("El dni de este odontólogo ya existe en nuestra base de datos. Por favor, revíselo.")
+		return domains.Odontologo{}, errors.New("La matrícula de este odontólogo ya existe en nuestra base de datos. Por favor, revíselo.")
 	}
 	err := r.storage.Create(o)
 	if err != nil {
@@ -58,7 +58,7 @@ func (r *repository) Delete(id int) error {
 
 func (r *repository) Update(id int, o domains.Odontologo) (domains.Odontologo, error) {
 	if !r.storage.Exists(o.Matricula) {
-		return domains.Odontologo{}, errors.New("El dni ingresado existe")
+		return domains.Odontologo{}, errors.New("La matrícula ingresado existe")
 	}
 	err := r.storage.Update(o)
 	if err != nil {

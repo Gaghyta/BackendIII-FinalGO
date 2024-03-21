@@ -1,4 +1,4 @@
-package odontologos
+package domains
 
 type Odontologo struct {
 	OdontologoId       int    `json:"odontologo_id"`
