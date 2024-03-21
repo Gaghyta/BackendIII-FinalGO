@@ -7,9 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/Gaghyta/BackendIIIFinalGO/cmd/server/handler"
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
-
-	"BackendIIIFinalGo/cmd/server/handler"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	//"github.com/go-sql-driver/mysql"

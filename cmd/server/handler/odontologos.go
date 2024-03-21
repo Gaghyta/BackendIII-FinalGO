@@ -4,8 +4,10 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/Gaghyta/BackendIII-FinalGO/internal/domains/odontologos"
-	"github.com/Gaghyta/BackendIII-FinalGO/pkg/web"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
+
+	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,7 +41,7 @@ func (h *odontologotHandler) GetByID() gin.HandlerFunc {
 }
 
 // validateEmptys valida que los campos no esten vacios
-func validateEmptys(odontologo *odontologos.Odontologos) (bool, error) {
+func validateEmptys(odontologo *domains.Odontologo) (bool, error) {
 	if odontologo.NombreOdontologo == "" || odontologo.ApellidoOdontologo == "" || odontologo.Matricula == "" {
 		return false, errors.New("fields can't be empty")
 	}
@@ -71,7 +73,7 @@ func validateExpiration(exp string) (bool, error) {
 // Post crea un nuevo odontólogo
 func (h *odontologotHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var odontologo odontologos.Odontologos
+		var odontologo domains.Odontologo
 		err := c.ShouldBindJSON(&odontologo)
 		if err != nil {
 			web.Failure(c, 400, errors.New("invalid json"))
