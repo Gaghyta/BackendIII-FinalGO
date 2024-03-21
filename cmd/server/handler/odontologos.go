@@ -5,10 +5,6 @@ import (
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
-
-	//"os"
-	//"net/http"
-	//"strings"
 	"github.com/bootcamp-go/consignas-go-db.git/pkg/web"
 	"github.com/gin-gonic/gin"
 )

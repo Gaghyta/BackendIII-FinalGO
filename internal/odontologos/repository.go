@@ -3,7 +3,7 @@ package odontologos
 import (
 	"errors"
 
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains/odontologos"
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 )
 

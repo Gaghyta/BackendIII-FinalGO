@@ -1,4 +1,4 @@
-package pacientes
+package domains
 
 type Pacientes struct {
 	PacienteID        int    `json:"paciente_id"`
