@@ -11,19 +11,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type odontologotHandler struct {
+type odontologoHandler struct {
 	s odontologos.Service
 }
 
 // NewProductHandler crea un nuevo controller de productos
-func NewProductHandler(s odontologos.Service) *odontologotHandler {
-	return &odontologotHandler{
+func NewProductHandler(s odontologos.Service) *odontologoHandler {
+	return &odontologoHandler{
 		s: s,
 	}
 }
 
 // Get obtiene un odontólogo por id
-func (h *odontologotHandler) GetByID() gin.HandlerFunc {
+func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
@@ -71,7 +71,7 @@ func validateExpiration(exp string) (bool, error) {
 } */
 
 // Post crea un nuevo odontólogo
-func (h *odontologotHandler) Post() gin.HandlerFunc {
+func (h *odontologoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var odontologo domains.Odontologo
 		err := c.ShouldBindJSON(&odontologo)
