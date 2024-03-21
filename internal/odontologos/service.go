@@ -1,14 +1,14 @@
 package odontologos
 
 import (
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 )
 
 type Service interface {
-	GetByID(id int) (odontologos.Odontologo, error)
-	Create(o odontologos.Odontologo) (odontologos.Odontologo, error)
+	GetByID(id int) (domains.Odontologo, error)
+	Create(o domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
-	Update(id int, o odontologos.Odontologo) (odontologos.Odontologo, error)
+	Update(id int, o domains.Odontologo) (domains.Odontologo, error)
 }
 
 type service struct {
@@ -20,25 +20,25 @@ func NewService(r Repository) Service {
 	return &service{r}
 }
 
-func (s *service) GetByID(id int) (odontologos.Odontologo, error) {
+func (s *service) GetByID(id int) (domains.Odontologo, error) {
 	o, err := s.r.GetByID(id)
 	if err != nil {
-		return odontologos.Odontologo{}, err
+		return domains.Odontologo{}, err
 	}
 	return o, nil
 }
 
-func (s *service) Create(o odontologos.Odontologo) (odontologos.Odontologo, error) {
+func (s *service) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	o, err := s.r.Create(o)
 	if err != nil {
-		return odontologos.Odontologo{}, err
+		return domains.Odontologo{}, err
 	}
 	return o, nil
 }
-func (s *service) Update(id int, uO odontologos.Odontologo) (odontologos.Odontologo, error) {
+func (s *service) Update(id int, uO domains.Odontologo) (domains.Odontologo, error) {
 	o, err := s.r.GetByID(id)
 	if err != nil {
-		return odontologos.Odontologo{}, err
+		return domains.Odontologo{}, err
 	}
 	if uO.Name != "" {
 		o.Name = uO.Name
@@ -51,7 +51,7 @@ func (s *service) Update(id int, uO odontologos.Odontologo) (odontologos.Odontol
 	}
 	o, err = s.r.Update(id, o)
 	if err != nil {
-		return odontologos.Odontologo{}, err
+		return domains.Odontologo{}, err
 	}
 	return o, nil
 }
