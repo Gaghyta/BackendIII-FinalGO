@@ -5,6 +5,6 @@ type Pacientes struct {
 	NombrePaciente    string `json:"nombre_paciente"`
 	ApellidoPaciente  string `json:"apellido_paciente"`
 	DomicilioPaciente string `json:"domicilio_paciente"`
-	DNI               string `json:"dni"`
+	Dni               string `json:"dni"`
 	FechaDeAlta       string `json:"fecha_de_alta"`
 }
