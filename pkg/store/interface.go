@@ -8,5 +8,6 @@ type StoreInterface interface {
 	Update(odontologo domains.Odontologo) error
 	Delete(id int) error
 	Exists(matricula string) bool
-	PatchMatricula(matricula string, nuevaMatricula string) error
+	Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
+	GetByMatricula(matricula string) (domains.Odontologo, error)
 }

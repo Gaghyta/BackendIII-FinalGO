@@ -3,6 +3,7 @@ package store
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
@@ -64,7 +65,7 @@ func (s *sqlStore) Update(o domains.Odontologo) error {
 		log.Fatal(err)
 	}
 
-	_, err = stmt.Exec(o.OdontologoId, o.ApellidoOdontologo, o.NombreOdontologo, o.Matricula)
+	_, err = stmt.Exec(o.ApellidoOdontologo, o.NombreOdontologo, o.Matricula, o.OdontologoId)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,4 +90,39 @@ func (s *sqlStore) Delete(id int) error {
 
 func (s *sqlStore) Exists(dni string) bool {
 	return true
+}
+
+func (s *sqlStore) GetByMatricula(matricula string) (domains.Odontologo, error) {
+	query := "SELECT odontologo_id, apellido_odontologo, nombre_odontologo, matricula FROM odontologos WHERE matricula = ?"
+	var o domains.Odontologo
+	err := s.db.QueryRow(query, matricula).Scan(&o.OdontologoId, &o.ApellidoOdontologo, &o.NombreOdontologo, &o.Matricula)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return domains.Odontologo{}, fmt.Errorf("no hay registros")
+		}
+		return domains.Odontologo{}, fmt.Errorf("chau es un error %s", err.Error())
+	}
+	return o, nil
+}
+
+func (s *sqlStore) Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error) {
+	odontologo, err := s.GetByMatricula(matricula)
+	if err != nil {
+		// Si ocurre un error al obtener el odontólogo, devolvemos el error
+		return domains.Odontologo{}, fmt.Errorf("error al obtener odontólogo por matrícula %s: %s", matricula, err.Error())
+	}
+
+	// Actualizar la matrícula del odontólogo
+	odontologo.Matricula = nuevaMatricula
+
+	// Preparar la consulta SQL para actualizar la matrícula en la base de datos
+	query := "UPDATE odontologos SET matricula = ? WHERE odontologo_id = ?"
+	_, err = s.db.Exec(query, odontologo.Matricula, odontologo.OdontologoId)
+	if err != nil {
+		// Si ocurre un error al ejecutar la consulta SQL, devolvemos el error
+		return domains.Odontologo{}, fmt.Errorf("error al actualizar la matrícula del odontólogo: %s", err.Error())
+	}
+
+	// Si la actualización fue exitosa, devolvemos nil (sin error)
+	return domains.Odontologo{}, nil
 }
