@@ -48,14 +48,6 @@ func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	return o, nil
 }
 
-func (r *repository) Delete(id int) error {
-	err := r.storage.Delete(id)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func (r *repository) Update(id int, o domains.Odontologo) (domains.Odontologo, error) {
 	if !r.storage.Exists(o.Matricula) {
 		return domains.Odontologo{}, errors.New("la matrícula ingresado existe")
@@ -65,4 +57,12 @@ func (r *repository) Update(id int, o domains.Odontologo) (domains.Odontologo, e
 		return domains.Odontologo{}, errors.New("error modificando el odontólogo")
 	}
 	return o, nil
+}
+
+func (r *repository) Delete(id int) error {
+	err := r.storage.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
