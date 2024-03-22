@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/cmd/server/handler"
-	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
+	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store/odontologoStore"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	//"github.com/go-sql-driver/mysql"
@@ -53,13 +53,13 @@ func main() {
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
+
+	storageOdontologo := odontologoStore.NewSqlStore(db)
+	repoOdontologos := odontologos.NewRepository(storageOdontologo)
+	serviceOdontologos := odontologos.NewService(repoOdontologos)
+	odontologoHandler := handler.NewProductHandler(serviceOdontologos)
+
 	defer db.Close()
-
-	storage := store.NewSqlStore(db)
-	repo := odontologos.NewRepository(storage)
-	service := odontologos.NewService(repo)
-	odontologoHandler := handler.NewProductHandler(service)
-
 	r := gin.Default()
 
 	r.GET("/ping", func(c *gin.Context) { c.String(200, "pong") })

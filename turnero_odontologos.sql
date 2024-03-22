@@ -82,8 +82,8 @@ CREATE TABLE `turno` (
   `idturno` int NOT NULL AUTO_INCREMENT,
   `fecha_y_hora` varchar(45) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `dni_paciente` varchar(45) NOT NULL,
-  `matricula_odontologo` varchar(45) NOT NULL,
+  `id_paciente` int NOT NULL,
+  `id_odontologo` int NOT NULL,
   PRIMARY KEY (`idturno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
