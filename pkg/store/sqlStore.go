@@ -73,7 +73,18 @@ func (s *sqlStore) Update(o domains.Odontologo) error {
 }
 
 func (s *sqlStore) Delete(id int) error {
-	return errors.New("not implemented yet")
+	query := "DELETE FROM odontologos WHERE odontologo_id = ?"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *sqlStore) Exists(dni string) bool {
