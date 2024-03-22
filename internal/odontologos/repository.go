@@ -17,6 +17,7 @@ type Repository interface {
 	Update(id int, p domains.Odontologo) (domains.Odontologo, error)
 	// Delete elimina un paciente
 	Delete(id int) error
+	GetByMatricula(matricula string) (domains.Odontologo, error)
 }
 
 type repository struct {
