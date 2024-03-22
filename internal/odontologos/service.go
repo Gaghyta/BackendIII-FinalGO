@@ -1,6 +1,8 @@
 package odontologos
 
 import (
+	"errors"
+
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 )
 
@@ -58,7 +60,12 @@ func (s *service) Update(id int, uO domains.Odontologo) (domains.Odontologo, err
 }
 
 func (s *service) Delete(id int) error {
+
 	err := s.r.Delete(id)
+	if id <= 0 {
+		return errors.New("ID inválido")
+	}
+
 	if err != nil {
 		return err
 	}
