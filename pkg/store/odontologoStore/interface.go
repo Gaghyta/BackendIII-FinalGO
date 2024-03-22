@@ -1,14 +1,14 @@
-package store
+package odontologoStore
 
-import "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
+import "github.com/Gaghyta/BackendIIIFinalGO/internal/domain"
 
 type StoreInterface interface {
 	// Read devuelve un paciente por su id
-	Read(id int) (pacientes.Pacientes, error)
+	Read(id int) (domain.Odontologo, error)
 	// Create agrega un nuevo paciente
-	Create(paciente pacientes.Pacientes) error
+	Create(paciente domain.Odontologo) error
 	// Update actualiza un paciente
-	Update(paciente pacientes.Pacientes) error
+	Update(paciente domain.Odontologo) error
 	// Delete elimina un paciente
 	Delete(id int) error
 	// Exists verifica si un paciente existe

@@ -7,26 +7,26 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
+	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store/odontologoStore"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologo"
+	"github.com/Gaghyta/BackendIIIFinalGO/cmd/server/handler"
 
-	"github.com/Gaghyta/BackendIIIFinalGO/cmd/handler"
-
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
-	//"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	//"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 )
 
 func main() {
 
-	bd, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnero_odontologos")
+	bd, err := sql.Open("mysql", "root:digital@tcp(localhost:3306)/turnero_odontologos")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	storage := store.NewSqlStore(bd)
-	repo := odontologos.NewRepository(storage)
-	service := odontologos.NewService(repo)
-	odontologoHandler := handler.NewProductHandler(service)
+	storageOdontologo := odontologoStore.NewSqlStore(bd)
+	repoOdontologos := odontologo.NewRepository(storageOdontologo)
+	serviceOdontologos := odontologo.NewService(repoOdontologos)
+	odontologoHandler := handler.NewProductHandler(serviceOdontologos)
+
 
 	r := gin.Default()
 
