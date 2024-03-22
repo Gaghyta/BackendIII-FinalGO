@@ -31,7 +31,7 @@ func NewRepository(storage store.StoreInterface) Repository {
 func (r *repository) GetByID(id int) (domains.Odontologo, error) {
 	odontologo, err := r.storage.Read(id)
 	if err != nil {
-		return domains.Odontologo{}, errors.New("El odontólogo buscado no existe")
+		return domains.Odontologo{}, err
 	}
 	return odontologo, nil
 
@@ -39,11 +39,11 @@ func (r *repository) GetByID(id int) (domains.Odontologo, error) {
 
 func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	if !r.storage.Exists(o.Matricula) {
-		return domains.Odontologo{}, errors.New("La matrícula de este odontólogo ya existe en nuestra base de datos. Por favor, revíselo.")
+		return domains.Odontologo{}, errors.New("la matrícula de este odontologo ya existe en nuestra base de datos")
 	}
 	err := r.storage.Create(o)
 	if err != nil {
-		return domains.Odontologo{}, errors.New("Error guardando odontólogo")
+		return domains.Odontologo{}, errors.New("error guardando odontólogo")
 	}
 	return o, nil
 }
@@ -58,11 +58,11 @@ func (r *repository) Delete(id int) error {
 
 func (r *repository) Update(id int, o domains.Odontologo) (domains.Odontologo, error) {
 	if !r.storage.Exists(o.Matricula) {
-		return domains.Odontologo{}, errors.New("La matrícula ingresado existe")
+		return domains.Odontologo{}, errors.New("la matrícula ingresado existe")
 	}
 	err := r.storage.Update(o)
 	if err != nil {
-		return domains.Odontologo{}, errors.New("Error modificando el odontólogo")
+		return domains.Odontologo{}, errors.New("error modificando el odontólogo")
 	}
 	return o, nil
 }

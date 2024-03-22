@@ -25,15 +25,15 @@ func NewProductHandler(s odontologos.Service) *odontologoHandler {
 // Get obtiene un odontólogo por id
 func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idParam := c.Param("id")
+		idParam := c.Param("odontologos_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
-			web.Failure(c, 400, errors.New("Este id es inválido"))
+			web.Failure(c, 400, errors.New("este id es inválido"))
 			return
 		}
 		odontologo, err := h.s.GetByID(id)
 		if err != nil {
-			web.Failure(c, 404, errors.New("El odontólogo que estás buscando no ha sido encontrado"))
+			web.Failure(c, 404, errors.New("el odontólogo que estás buscando no ha sido encontrado"))
 			return
 		}
 		web.Success(c, 200, odontologo)

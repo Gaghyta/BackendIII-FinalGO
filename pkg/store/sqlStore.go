@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type sqlStore struct {
