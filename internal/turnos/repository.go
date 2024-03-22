@@ -35,15 +35,15 @@ func (r *repository) GetByID(id int) (domains.Turno, error) {
 
 }
 
-func (r *repository) Create(o domains.Turno) (domains.Turno, error) {
-	if !r.storage.Exists(o.Dni) {
-		return domains.Turno{}, errors.New("El DNI ya existe en nuestra base de datos. Por favor, revíselo.")
+func (r *repository) Create(t domains.Turno) (domains.Turno, error) {
+	if r.storage.Exists(t.FechaYHora, t.DentistaIDDentista) {
+		return domains.Turno{}, errors.New("El odontólogo tiene un turno asignado en ese horario en nuestra base de datos. Por favor, revíselo.")
 	}
-	err := r.storage.Create(o)
+	err := r.storage.Create(t)
 	if err != nil {
-		return domains.Turno{}, errors.New("Error guardando paciente")
+		return domains.Turno{}, errors.New("Error guardando turno")
 	}
-	return o, nil
+	return t, nil
 }
 
 func (r *repository) Delete(id int) error {
@@ -55,7 +55,7 @@ func (r *repository) Delete(id int) error {
 }
 
 func (r *repository) Update(id int, o domains.Turno) (domains.Turno, error) {
-	if !r.storage.Exists(o.Dni) {
+	if !r.storage.Exists(o.FechaYHora, o.DentistaIDDentista) {
 		return domains.Turno{}, errors.New("El DNI ingresado ya existe")
 	}
 	err := r.storage.Update(o)

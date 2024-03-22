@@ -6,9 +6,9 @@ import (
 
 type Service interface {
 	GetByID(id int) (domains.Turno, error)
-	Create(o domains.Turno) (domains.Turno, error)
+	Create(t domains.Turno) (domains.Turno, error)
 	Delete(id int) error
-	Update(id int, o domains.Turno) (domains.Turno, error)
+	Update(id int, t domains.Turno) (domains.Turno, error)
 }
 
 type service struct {
@@ -21,39 +21,39 @@ func NewService(r Repository) Service {
 }
 
 func (s *service) GetByID(id int) (domains.Turno, error) {
-	o, err := s.r.GetByID(id)
+	t, err := s.r.GetByID(id)
 	if err != nil {
 		return domains.Turno{}, err
 	}
-	return o, nil
+	return t, nil
 }
 
-func (s *service) Create(o domains.Turno) (domains.Turno, error) {
-	o, err := s.r.Create(o)
+func (s *service) Create(t domains.Turno) (domains.Turno, error) {
+	t, err := s.r.Create(t)
 	if err != nil {
 		return domains.Turno{}, err
 	}
-	return o, nil
+	return t, nil
 }
-func (s *service) Update(id int, uP domains.Turno) (domains.Turno, error) {
-	o, err := s.r.GetByID(id)
+func (s *service) Update(id int, ut domains.Turno) (domains.Turno, error) {
+	t, err := s.r.GetByID(id)
 	if err != nil {
 		return domains.Turno{}, err
 	}
-	if uP.NombrePaciente != "" {
-		o.NombrePaciente = uP.NombrePaciente
+	if ut.FechaYHora != "" {
+		t.FechaYHora = ut.FechaYHora
 	}
-	if uP.ApellidoPaciente != "" {
-		o.ApellidoPaciente = uP.ApellidoPaciente
+	if ut.DentistaIDDentista != 0 {
+		t.DentistaIDDentista = ut.DentistaIDDentista
 	}
-	if uP.Dni != "" {
-		o.Dni = uP.Dni
+	if ut.PacienteIDPaciente != 0 {
+		t.PacienteIDPaciente = ut.PacienteIDPaciente
 	}
-	o, err = s.r.Update(id, o)
+	t, err = s.r.Update(id, t)
 	if err != nil {
 		return domains.Turno{}, err
 	}
-	return o, nil
+	return t, nil
 }
 
 func (s *service) Delete(id int) error {

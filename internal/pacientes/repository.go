@@ -29,7 +29,7 @@ func NewRepository(storage pacienteStore.StoreInterface) Repository {
 func (r *repository) GetByID(id int) (domains.Paciente, error) {
 	product, err := r.storage.Read(id)
 	if err != nil {
-		return domains.Paciente{}, errors.New("El odontólogo buscado no existe")
+		return domains.Paciente{}, errors.New("El paciente buscado no existe")
 	}
 	return product, nil
 

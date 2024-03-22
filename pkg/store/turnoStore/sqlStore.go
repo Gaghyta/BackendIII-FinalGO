@@ -123,6 +123,16 @@ func (s *sqlStore) Delete(id int) error {
 	return errors.New("not implemented yet")
 }
 
-func (s *sqlStore) Exists(dni string) bool {
-	return true
+func (s *sqlStore) Exists(fecha_y_hora string, odontologo int) bool {
+	query := "SELECT fecha_y_hora, idDentista FROM turnos WHERE fecha_y_hora = ? AND id_odontologo = ?"
+
+	// Ejecutar la consulta y recuperar los datos
+	var t domains.Turno
+	err := s.db.QueryRow(query, fecha_y_hora, odontologo).Scan(&t.FechaYHora, &t.DentistaIDDentista)
+
+	if err == sql.ErrNoRows {
+		// El turno con fecha y odontologo proporcionado no fue encontrado
+		return true
+	}
+	return false
 }
