@@ -81,7 +81,7 @@ func main() {
 		odontologos.POST("", odontologoHandler.Post())
 		//odontologos.DELETE(":id", odontologoHandler.Delete())
 		//odontologos.PATCH(":id", odontologoHandler.Patch())
-		//odontologos.PUT(":id", odontologoHandler.Put())
+		odontologos.PUT(":id", odontologoHandler.Put())
 	}
 
 	r.Run(":8080")

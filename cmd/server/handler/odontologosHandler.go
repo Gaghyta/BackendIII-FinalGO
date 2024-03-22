@@ -97,3 +97,42 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 		web.Success(c, 201, o)
 	}
 }
+
+// Put modifica un odontólogo
+func (h *odontologoHandler) Put() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		// Obtener el ID del odontólogo de la URL
+		idParam := c.Param("id")
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			web.Failure(c, 400, errors.New("invalid ID"))
+			return
+		}
+
+		// Obtener los datos actualizados del odontólogo del cuerpo de la solicitud
+		var odontologo domains.Odontologo
+		err = c.ShouldBindJSON(&odontologo)
+		if err != nil {
+			web.Failure(c, 400, errors.New("invalid JSON"))
+			return
+		}
+
+		// Validar los datos del odontólogo actualizado
+		valid, err := validateEmptys(&odontologo)
+		if !valid {
+			web.Failure(c, 400, err)
+			return
+		}
+
+		// Llamar al servicio para realizar la actualización en la base de datos
+		odontologoActualizado, err := h.s.Update(id, odontologo)
+		if err != nil {
+			web.Failure(c, 400, err)
+			return
+		}
+
+		web.Success(c, 201, odontologoActualizado)
+
+	}
+}

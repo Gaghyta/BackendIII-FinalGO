@@ -37,14 +37,15 @@ func (s *service) Create(o domains.Odontologo) (domains.Odontologo, error) {
 }
 func (s *service) Update(id int, uO domains.Odontologo) (domains.Odontologo, error) {
 	o, err := s.r.GetByID(id)
+
 	if err != nil {
 		return domains.Odontologo{}, err
 	}
-	if uO.NombreOdontologo != "" {
-		o.NombreOdontologo = uO.NombreOdontologo
-	}
 	if uO.ApellidoOdontologo != "" {
 		o.ApellidoOdontologo = uO.ApellidoOdontologo
+	}
+	if uO.NombreOdontologo != "" {
+		o.NombreOdontologo = uO.NombreOdontologo
 	}
 	if uO.Matricula != "" {
 		o.Matricula = uO.Matricula

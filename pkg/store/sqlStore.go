@@ -58,7 +58,18 @@ func (s *sqlStore) Create(p domains.Odontologo) error {
 }
 
 func (s *sqlStore) Update(o domains.Odontologo) error {
-	return errors.New("not implemented yet")
+	query := "UPDATE odontologos SET apellido_odontologo = ?, nombre_odontologo = ?, matricula = ? WHERE odontologo_id = ?"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = stmt.Exec(o.OdontologoId, o.ApellidoOdontologo, o.NombreOdontologo, o.Matricula)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return nil
 }
 
 func (s *sqlStore) Delete(id int) error {
