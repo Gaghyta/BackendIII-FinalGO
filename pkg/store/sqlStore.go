@@ -24,7 +24,7 @@ func NewSqlStore(db *sql.DB) StoreInterface {
 
 func (s *sqlStore) Read(id int) (domains.Odontologo, error) {
 	// Consulta para recuperar el odontólogo con el ID proporcionado
-	query := "SELECT apellido_odontologo, nombre_odontologo, matricula FROM odontologos WHERE id = ?"
+	query := "SELECT apellido_odontologo, nombre_odontologo, matricula FROM odontologos WHERE odontologo_id = ?"
 
 	// Ejecutar la consulta y recuperar los datos
 	var o domains.Odontologo

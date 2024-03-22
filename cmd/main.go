@@ -77,7 +77,7 @@ func main() {
 	odontologos := r.Group("/odontologos")
 
 	{
-		odontologos.GET(":odontologo_id", odontologoHandler.GetByID())
+		odontologos.GET(":id", odontologoHandler.GetByID())
 		odontologos.POST("", odontologoHandler.Post())
 		//odontologos.DELETE(":id", odontologoHandler.Delete())
 		//odontologos.PATCH(":id", odontologoHandler.Patch())
