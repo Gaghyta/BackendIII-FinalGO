@@ -136,3 +136,24 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 
 	}
 }
+
+func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Obtener el ID del odontólogo de la URL
+		idParam := c.Param("id")
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			web.Failure(c, 400, errors.New("ID inválido"))
+			return
+		}
+
+		// Llamar al servicio para eliminar el odontólogo
+		err = h.s.Delete(id)
+		if err != nil {
+			web.Failure(c, 500, err) // Cambiar el código de estado si es necesario
+			return
+		}
+
+		web.Success(c, 201, "Odontólogo eliminado exitosamente")
+	}
+}
