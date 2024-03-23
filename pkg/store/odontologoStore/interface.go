@@ -13,4 +13,6 @@ type StoreInterface interface {
 	Delete(id int) error
 	// Exists verifica si un odontologo existe
 	Exists(matricula string) bool
+	Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
+	GetByMatricula(matricula string) (domains.Odontologo, error)
 }

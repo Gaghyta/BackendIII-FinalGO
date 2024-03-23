@@ -1,13 +1,13 @@
-package odontologoStore
+package ododontologoStore
 
 import (
 	"database/sql"
 	"errors"
 	"log"
 
-	//"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
-
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type sqlStore struct {
@@ -21,9 +21,10 @@ func NewSqlStore(db *sql.DB) StoreInterface {
 }
 
 // IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE
+
 func (s *sqlStore) Read(id int) (domains.Odontologo, error) {
 	// Consulta para recuperar el odontólogo con el ID proporcionado
-	query := "SELECT apellido_odontologo, nombre_odontologo, matricula FROM odontologos WHERE id = ?"
+	query := "SELECT apellido_odontologo, nombre_odontologo, matricula FROM odontologos WHERE odontologo_id = ?"
 
 	// Ejecutar la consulta y recuperar los datos
 	var o domains.Odontologo
@@ -57,11 +58,33 @@ func (s *sqlStore) Create(p domains.Odontologo) error {
 }
 
 func (s *sqlStore) Update(o domains.Odontologo) error {
-	return errors.New("not implemented yet")
+	query := "UPDATE odontologos SET apellido_odontologo = ?, nombre_odontologo = ?, matricula = ? WHERE odontologo_id = ?"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = stmt.Exec(o.OdontologoId, o.ApellidoOdontologo, o.NombreOdontologo, o.Matricula)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return nil
 }
 
 func (s *sqlStore) Delete(id int) error {
-	return errors.New("not implemented yet")
+	query := "DELETE FROM odontologos WHERE odontologo_id = ?"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *sqlStore) Exists(dni string) bool {

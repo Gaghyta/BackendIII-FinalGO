@@ -9,6 +9,8 @@ import (
 
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
+
+	"net/http"
 )
 
 type odontologoHandler struct {
@@ -49,27 +51,6 @@ func validateEmptys(odontologo *domains.Odontologo) (bool, error) {
 	return true, nil
 }
 
-/*  validateExpiration valida que la fecha de expiracion sea valida
-func validateExpiration(exp string) (bool, error) {
-	dates := strings.Split(exp, "/")
-	list := []int{}
-	if len(dates) != 3 {
-		return false, errors.New("invalid expiration date, must be in format: dd/mm/yyyy")
-	}
-	for value := range dates {
-		number, err := strconv.Atoi(dates[value])
-		if err != nil {
-			return false, errors.New("invalid expiration date, must be numbers")
-		}
-		list = append(list, number)
-	}
-	condition := (list[0] < 1 || list[0] > 31) && (list[1] < 1 || list[1] > 12) && (list[2] < 1 || list[2] > 9999)
-	if condition {
-		return false, errors.New("invalid expiration date, date must be between 1 and 31/12/9999")
-	}
-	return true, nil
-} */
-
 // Post crea un nuevo odontólogo
 func (h *odontologoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -84,11 +65,7 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 400, err)
 			return
 		}
-		/* valid, err = validateExpiration(product.Expiration)
-		if !valid {
-			web.Failure(c, 400, err)
-			return
-		} */
+
 		o, err := h.s.Create(odontologo)
 		if err != nil {
 			web.Failure(c, 400, err)
@@ -155,5 +132,32 @@ func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 		}
 
 		web.Success(c, 201, "Odontólogo eliminado exitosamente")
+	}
+}
+
+func (h *odontologoHandler) Patch() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Obtener los datos del cuerpo de la solicitud
+		var patchData struct {
+			NuevaMatricula string `json:"nueva_matricula"`
+		}
+		if err := c.ShouldBindJSON(&patchData); err != nil {
+			web.Failure(c, http.StatusBadRequest, errors.New("datos JSON inválidos"))
+			return
+		}
+
+		// Obtener la matrícula actual y la nueva matrícula del cuerpo de la solicitud
+		matricula := c.Param("matricula")
+		nuevaMatricula := patchData.NuevaMatricula
+
+		// Llamar al servicio para actualizar la matrícula
+		odontologo, err := h.s.Patch(matricula, nuevaMatricula)
+		if err != nil {
+			web.Failure(c, http.StatusInternalServerError, err)
+			return
+		}
+
+		// Si no hay errores, responder con el objeto odontólogo actualizado
+		web.Success(c, http.StatusOK, odontologo)
 	}
 }
