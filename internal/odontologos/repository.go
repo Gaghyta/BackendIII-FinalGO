@@ -14,7 +14,7 @@ type Repository interface {
 	Create(p domains.Odontologo) (domains.Odontologo, error)
 	Update(id int, p domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
-	Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
+	//Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
 	GetByMatricula(matricula string) (domains.Odontologo, error)
 }
 
@@ -71,7 +71,8 @@ func (r *repository) GetByMatricula(matricula string) (domains.Odontologo, error
 	odontologo, err := r.storage.GetByMatricula(matricula)
 	if err != nil {
 		// Manejo de errores si ocurre algún problema al obtener el odontólogo por matrícula
-		return domains.Odontologo{}, fmt.Errorf("error al obtener odontólogo por matrícula %s: %s", matricula, err.Error())
+		//return domains.Odontologo{}, fmt.Errorf("error al obtener odontólogo por matrícula %s: %s", matricula, err.Error())
+		return domains.Odontologo{}, fmt.Errorf("error acá en GetByMatricula")
 	}
 
 	// Verificar si se encontró el odontólogo

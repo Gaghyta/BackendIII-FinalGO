@@ -109,7 +109,7 @@ func (s *sqlStore) Patch(matricula string, nuevaMatricula string) (domains.Odont
 	odontologo, err := s.GetByMatricula(matricula)
 	if err != nil {
 		// Si ocurre un error al obtener el odontólogo, devolvemos el error
-		return domains.Odontologo{}, fmt.Errorf("error al obtener odontólogo por matrícula %s: %s", matricula, err.Error())
+		return domains.Odontologo{}, fmt.Errorf("error patch sqlStore al obtener odontólogo por matrícula %s: %s", matricula, err.Error())
 	}
 
 	// Actualizar la matrícula del odontólogo

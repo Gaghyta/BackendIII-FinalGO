@@ -79,7 +79,7 @@ func (s *service) Patch(matricula string, nuevaMatricula string) (domains.Odonto
 
 	odontologo, err := s.r.GetByMatricula(matricula)
 	if err != nil {
-		return domains.Odontologo{}, fmt.Errorf("error al obtener odontólogo")
+		return domains.Odontologo{}, fmt.Errorf("error en patch service al obtener odontólogo")
 	}
 
 	// Actualizar la matrícula del odontólogo

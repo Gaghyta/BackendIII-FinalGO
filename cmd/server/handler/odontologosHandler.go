@@ -65,11 +65,7 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 400, err)
 			return
 		}
-		/* valid, err = validateExpiration(product.Expiration)
-		if !valid {
-			web.Failure(c, 400, err)
-			return
-		} */
+
 		o, err := h.s.Create(odontologo)
 		if err != nil {
 			web.Failure(c, 400, err)
