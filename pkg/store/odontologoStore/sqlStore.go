@@ -1,62 +1,3 @@
-/* package store
-
-import (
-	"database/sql"
-	"errors"
-	"log"
-
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
-)
-
-type sqlStore struct {
-	db *sql.DB
-}
-
-func NewSqlStore(db *sql.DB) StoreInterface {
-	return &sqlStore{
-		db: db,
-	}
-}
-
-// IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE
-func (s *sqlStore) Read(p domain.Odontologo) error {
-	return domain.Odontologo{}, nil
-}
-
-func (s *sqlStore) Create(id int) (domain.Odontologo, error) {
-	query := "INSERT INTO odontologos (apellido_odontologo, , nombre_odontologo, matricula) VALUES (?, ?, ?, ?, ?, ?);"
-	stmt, err := s.db.Prepare(query)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	res, err := stmt.Exec(odontologos.ApellidoOdontologo, odontologos.NombreOdontologo, odontologos.Matricula)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = res.RowsAffected()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *sqlStore) Update(p pacientes.Pacientes) error {
-	return errors.New("not implemented yet")
-}
-
-func (s *sqlStore) Delete(id int) error {
-	return errors.New("not implemented yet")
-}
-
-func (s *sqlStore) Exists(dni string) bool {
-	return bool(true)
-}
-*/
-
 package odontologoStore
 
 import (
@@ -67,7 +8,6 @@ import (
 	//"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
-
 )
 
 type sqlStore struct {
