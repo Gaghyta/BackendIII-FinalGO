@@ -7,10 +7,10 @@ type StoreInterface interface {
 	Read(id int) (domains.Odontologo, error)
 	// Create agrega un nuevo odontologo
 	Create(odontologo domains.Odontologo) error
-	// Update actualiza un paciente
+	// Update actualiza un odontologo
 	Update(odontologo domains.Odontologo) error
-	// Delete elimina un paciente
+	// Delete elimina un odontologo
 	Delete(id int) error
-	// Exists verifica si un paciente existe
+	// Exists verifica si un odontologo existe
 	Exists(matricula string) bool
 }
