@@ -1,62 +1,3 @@
-/* package store
-
-import (
-	"database/sql"
-	"errors"
-	"log"
-
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
-)
-
-type sqlStore struct {
-	db *sql.DB
-}
-
-func NewSqlStore(db *sql.DB) StoreInterface {
-	return &sqlStore{
-		db: db,
-	}
-}
-
-// IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE
-func (s *sqlStore) Read(p odontologos.Odontologos) error {
-	return odontologos.Odontologos{}, nil
-}
-
-func (s *sqlStore) Create(id int) (odontologos.Odontologos, error) {
-	query := "INSERT INTO odontologos (apellido_odontologo, , nombre_odontologo, matricula) VALUES (?, ?, ?, ?, ?, ?);"
-	stmt, err := s.db.Prepare(query)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	res, err := stmt.Exec(odontologos.ApellidoOdontologo, odontologos.NombreOdontologo, odontologos.Matricula)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = res.RowsAffected()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *sqlStore) Update(p pacientes.Pacientes) error {
-	return errors.New("not implemented yet")
-}
-
-func (s *sqlStore) Delete(id int) error {
-	return errors.New("not implemented yet")
-}
-
-func (s *sqlStore) Exists(dni string) bool {
-	return bool(true)
-}
-*/
-
 package pacienteStore
 
 import (
@@ -64,9 +5,7 @@ import (
 	"errors"
 	"log"
 
-
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
-
 )
 
 type sqlStore struct {
@@ -81,15 +20,16 @@ func NewSqlStore(db *sql.DB) StoreInterface {
 
 // IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE
 func (s *sqlStore) Read(id int) (domains.Paciente, error) {
-	// Consulta para recuperar el odontólogo con el ID proporcionado
-	query := "SELECT apellido_odontologo, nombre_odontologo, matricula FROM odontologos WHERE id = ?"
+	// Consulta para recuperar el paciente con el ID proporcionado
+	query := "SELECT nombre, apellido, domicilio, dni, fecha_de_alta FROM pacientes WHERE idpaciente = ?"
 
 	// Ejecutar la consulta y recuperar los datos
-	var o domains.Paciente
-	err := s.db.QueryRow(query, id).Scan(&o.ApellidoPaciente, &o.NombrePaciente, &o.Dni)
+	var p domains.Paciente
+	err := s.db.QueryRow(query, id).Scan(&p.NombrePaciente, &p.ApellidoPaciente, &p.DomicilioPaciente,
+		&p.Dni, p.FechaDeAlta)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			// El odontólogo con el ID proporcionado no fue encontrado
+			// El paciente con el ID proporcionado no fue encontrado
 			return domains.Paciente{}, errors.New("paciente no encontrado")
 		}
 		// Ocurrió un error al ejecutar la consulta
@@ -97,17 +37,17 @@ func (s *sqlStore) Read(id int) (domains.Paciente, error) {
 	}
 
 	// Retornar los datos del paciente recuperado
-	return o, nil
+	return p, nil
 }
 
 func (s *sqlStore) Create(p domains.Paciente) error {
-	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES (?, ?, ?);"
+	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES (?, ?, ?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = stmt.Exec(p.ApellidoPaciente, p.NombrePaciente, p.DomicilioPaciente, p.Dni, p.FechaDeAlta)
+	_, err = stmt.Exec(p.NombrePaciente, p.ApellidoPaciente, p.DomicilioPaciente, p.Dni, p.FechaDeAlta)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -116,13 +56,50 @@ func (s *sqlStore) Create(p domains.Paciente) error {
 }
 
 func (s *sqlStore) Update(p domains.Paciente) error {
-	return errors.New("not implemented yet")
+	query := "UPDATE pacientes SET nombre = ?, apellido = ?, domicilio = ?, dni = ?, fecha_de_alta = ? WHERE id = ?;"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	res, err := stmt.Exec(p.NombrePaciente, p.ApellidoPaciente, p.DomicilioPaciente, p.Dni, p.FechaDeAlta, p.PacienteID)
+	if err != nil {
+		return err
+	}
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *sqlStore) Delete(id int) error {
-	return errors.New("not implemented yet")
+	query := "DELETE FROM pacientes WHERE id = ?;"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	res, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *sqlStore) Exists(dni string) bool {
-	return true
+	var exists bool
+	var id int
+	query := "SELECT idpaciente FROM pacientes WHERE dni = ?;"
+	row := s.db.QueryRow(query, dni)
+	err := row.Scan(&id)
+	if err != nil {
+		return false
+	}
+	if id > 0 {
+		exists = true
+	}
+	return exists
 }

@@ -53,13 +53,16 @@ func main() {
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
+	defer db.Close()
 
 	storageOdontologo := odontologoStore.NewSqlStore(db)
 	repoOdontologos := odontologos.NewRepository(storageOdontologo)
 	serviceOdontologos := odontologos.NewService(repoOdontologos)
-	odontologoHandler := handler.NewProductHandler(serviceOdontologos)
+	odontologoHandler := handler.NewOdontologotHandler(serviceOdontologos)
 
-	defer db.Close()
+
+
+	
 	r := gin.Default()
 
 	r.GET("/ping", func(c *gin.Context) { c.String(200, "pong") })
