@@ -4,7 +4,8 @@ import (
 	"errors"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
-	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store/turnoStore"
+
+	turnoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 )
 
 type Repository interface {
@@ -18,11 +19,11 @@ type Repository interface {
 }
 
 type repository struct {
-	storage turnoStore.StoreInterface
+	storage turnoStore.StoreTurnoInterface
 }
 
 // NewRepository crea un nuevo repositorio
-func NewRepository(storage turnoStore.StoreInterface) Repository {
+func NewTurnosRepository(storage turnoStore.StoreTurnoInterface) Repository {
 	return &repository{storage}
 }
 

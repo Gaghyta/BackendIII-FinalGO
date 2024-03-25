@@ -4,12 +4,13 @@ import (
 	"errors"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
-	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store/pacienteStore"
+	pacienteStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 )
 
 type Repository interface {
 	// GetByID busca un paciente por su id
 	GetByID(id int) (domains.Paciente, error)
+	// Create actualiza un paciente
 	Create(o domains.Paciente) (domains.Paciente, error)
 	// Update actualiza un paciente
 	Update(id int, p domains.Paciente) (domains.Paciente, error)
@@ -18,11 +19,11 @@ type Repository interface {
 }
 
 type repository struct {
-	storage pacienteStore.StoreInterface
+	storage pacienteStore.StorePacienteInterface
 }
 
 // NewRepository crea un nuevo repositorio
-func NewRepository(storage pacienteStore.StoreInterface) Repository {
+func NewPacienteRepository(storage pacienteStore.StorePacienteInterface) Repository {
 	return &repository{storage}
 }
 

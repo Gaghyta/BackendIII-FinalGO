@@ -3,7 +3,7 @@ package odontologos
 import (
 	"errors"
 
-	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store/odontologoStore"
+	odontologoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 )
@@ -18,11 +18,11 @@ type Repository interface {
 }
 
 type repository struct {
-	storage odontologoStore.StoreInterface
+	storage odontologoStore.StoreOdontologoInterface
 }
 
 // NewRepository crea un nuevo repositorio
-func NewRepository(storage odontologoStore.StoreInterface) Repository {
+func NewOdontologoRepository(storage odontologoStore.StoreOdontologoInterface) Repository {
 	return &repository{storage}
 }
 
