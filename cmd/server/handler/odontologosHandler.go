@@ -142,16 +142,16 @@ func (h *odontologoHandler) Patch() gin.HandlerFunc {
 		Matricula          string `json:"matricula,omitempty"`
 	}
 
-	return func(ctx *gin.Context) {
+	return func(c *gin.Context) {
 		var r Request
-		idParam := ctx.Param("id")
+		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": "invalid id"})
+			c.JSON(400, gin.H{"error": "invalid id"})
 			return
 		}
-		if err := ctx.ShouldBindJSON(&r); err != nil {
-			ctx.JSON(400, gin.H{"error": "invalid json"})
+		if err := c.ShouldBindJSON(&r); err != nil {
+			c.JSON(400, gin.H{"error": "invalid json"})
 			return
 		}
 
@@ -162,9 +162,9 @@ func (h *odontologoHandler) Patch() gin.HandlerFunc {
 		}
 		o, err := h.s.Patch(id, update)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
+			c.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
-		ctx.JSON(201, o)
+		c.JSON(201, o)
 	}
 }
