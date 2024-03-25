@@ -120,13 +120,13 @@ func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) 
 	}
 	query := "UPDATE odontologos SET"
 	if odontologoInput.OdontologoId > 0 {
-		query += " id = '" + string(odontologoInput.OdontologoId) + "',"
+		query += " odontologo_id = '" + string(odontologoInput.OdontologoId) + "',"
 	}
 	if odontologoInput.NombreOdontologo != "" {
-		query += " nombre = '" + odontologoInput.NombreOdontologo + "',"
+		query += " apellido_odontologo = '" + odontologoInput.NombreOdontologo + "',"
 	}
 	if odontologoInput.ApellidoOdontologo != "" {
-		query += " apellido = '" + odontologoInput.ApellidoOdontologo + "',"
+		query += " nombre_odontologo = '" + odontologoInput.ApellidoOdontologo + "',"
 	}
 	if odontologoInput.Matricula != "" {
 		query += " matricula = '" + odontologoInput.Matricula + "',"
@@ -247,9 +247,6 @@ func (s *PacienteSqlStore) GetByDNI(dni string) (domains.Paciente, error) {
 	return p, nil
 }
 
-
-
-
 func (s *PacienteSqlStore) Create(p domains.Paciente) error {
 	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES (?, ?, ?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
@@ -342,7 +339,7 @@ func (s *TurnoSqlStore) GetByDNI(dni string) (domains.Turno, error) {
 	// Consulta para recuperar el Id del vpaciente con el DNI proporcionado
 	var vpaciente domains.Paciente
 	query := "SELECT idpaciente FROM pacientes WHERE dni = ?"
-	row := s.db.QueryRow(query,dni)
+	row := s.db.QueryRow(query, dni)
 	err := row.Scan(&vpaciente.PacienteID)
 	if err != nil {
 		return domains.Turno{}, errors.New("No existen pacientes con ese DNI")
