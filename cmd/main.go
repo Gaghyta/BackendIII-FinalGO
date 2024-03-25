@@ -79,7 +79,7 @@ func main() {
 	{
 		pacientes.GET(":id", pacienteHandler.GetByID())
 		pacientes.POST("", pacienteHandler.Post())
-		pacientes.DELETE(":id", pacienteHandler.Delete())
+		pacientes.DELETE(":id", pacienteHandler.DeleteByID())
 		pacientes.PATCH(":id", pacienteHandler.Patch())
 		pacientes.PUT(":id", pacienteHandler.Put())
 	}
