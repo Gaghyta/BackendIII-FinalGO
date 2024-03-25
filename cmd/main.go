@@ -48,13 +48,13 @@ func main() {
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
+	defer db.Close()
 
 	storageOdontologo := odontologoStore.NewOdontologoSqlStore(db)
 	repoOdontologos := odontologos.NewRepository(storageOdontologo)
 	serviceOdontologos := odontologos.NewService(repoOdontologos)
 	odontologoHandler := handler.NewOdontologoHandler(serviceOdontologos)
 
-	defer db.Close()
 	r := gin.Default()
 
 	r.GET("/ping", func(c *gin.Context) { c.String(200, "pong") })

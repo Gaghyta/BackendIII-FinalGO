@@ -16,11 +16,13 @@ type Repository interface {
 	Update(id int, p domains.Paciente) (domains.Paciente, error)
 	// Delete elimina un paciente
 	Delete(id int) error
+
 }
 
 type repository struct {
 	storage pacienteStore.StorePacienteInterface
 }
+
 
 // NewRepository crea un nuevo repositorio
 func NewRepository(storage pacienteStore.StorePacienteInterface) Repository {
@@ -33,7 +35,7 @@ func (r *repository) GetByID(id int) (domains.Paciente, error) {
 		return domains.Paciente{}, errors.New("el paciente buscado no existe")
 	}
 	return product, nil
-
+	
 }
 
 func (r *repository) Create(o domains.Paciente) (domains.Paciente, error) {
@@ -56,7 +58,7 @@ func (r *repository) Delete(id int) error {
 }
 
 func (r *repository) Update(id int, o domains.Paciente) (domains.Paciente, error) {
-	if !r.storage.Exists(o.Dni) {
+	if r.storage.Exists(o.Dni) {
 		return domains.Paciente{}, errors.New("El DNI ingresado ya existe")
 	}
 	err := r.storage.Update(o)

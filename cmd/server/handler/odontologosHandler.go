@@ -40,8 +40,8 @@ func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-// validateEmptys valida que los campos no esten vacios
-func validateEmptys(odontologo *domains.Odontologo) (bool, error) {
+// validateEmptyOdontologo valida que los campos no esten vacios
+func validateEmptyOdontologo(odontologo *domains.Odontologo) (bool, error) {
 	if odontologo.NombreOdontologo == "" || odontologo.ApellidoOdontologo == "" || odontologo.Matricula == "" {
 		return false, errors.New("fields can't be empty")
 	}
@@ -58,7 +58,7 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("invalid json"))
 			return
 		}
-		valid, err := validateEmptys(&odontologo)
+		valid, err := validateEmptyOdontologo(&odontologo)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
@@ -94,7 +94,7 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 		}
 
 		// Validar los datos del odontólogo actualizado
-		valid, err := validateEmptys(&odontologo)
+		valid, err := validateEmptyOdontologo(&odontologo)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
