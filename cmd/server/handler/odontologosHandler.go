@@ -133,29 +133,38 @@ func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 	}
 }
 
-/* func (h *odontologoHandler) Patch() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Obtener los datos del cuerpo de la solicitud
-		var patchData struct {
-			NuevaMatricula string `json:"nueva_matricula"`
-		}
-		if err := c.ShouldBindJSON(&patchData); err != nil {
-			web.Failure(c, http.StatusBadRequest, errors.New("datos JSON inválidos"))
-			return
-		}
+func (h *odontologoHandler) Patch() gin.HandlerFunc {
 
-		// Obtener la matrícula actual y la nueva matrícula del cuerpo de la solicitud
-		matricula := c.Param("matricula")
-		nuevaMatricula := patchData.NuevaMatricula
-
-		// Llamar al servicio para actualizar la matrícula
-		odontologo, err := h.s.Patch(matricula, nuevaMatricula)
-		if err != nil {
-			web.Failure(c, http.StatusInternalServerError, err)
-			return
-		}
-
-		// Si no hay errores, responder con el objeto odontólogo actualizado
-		web.Success(c, http.StatusOK, odontologo)
+	// Obtener los datos del cuerpo de la solicitud
+	type Request struct {
+		NombreOdontologo   string `json:"nombre_odontologo,omitempty"`
+		ApellidoOdontologo string `json:"apellido_odontologo,omitempty"`
+		Matricula          string `json:"matricula,omitempty"`
 	}
-} */
+
+	return func(ctx *gin.Context) {
+		var r Request
+		idParam := ctx.Param("id")
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "invalid id"})
+			return
+		}
+		if err := ctx.ShouldBindJSON(&r); err != nil {
+			ctx.JSON(400, gin.H{"error": "invalid json"})
+			return
+		}
+
+		update := domains.Odontologo{
+			ApellidoOdontologo: r.ApellidoOdontologo,
+			NombreOdontologo:   r.NombreOdontologo,
+			Matricula:          r.Matricula,
+		}
+		o, err := h.s.Patch(id, update)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(201, o)
+	}
+}

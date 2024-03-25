@@ -65,7 +65,7 @@ func main() {
 		odontologos.GET(":id", odontologoHandler.GetByID())
 		odontologos.POST("", odontologoHandler.Post())
 		odontologos.DELETE(":id", odontologoHandler.DeleteByID())
-		odontologos.PATCH(":matricula", odontologoHandler.Patch())
+		odontologos.PATCH(":id", odontologoHandler.Patch())
 		odontologos.PUT(":id", odontologoHandler.Put())
 	}
 
