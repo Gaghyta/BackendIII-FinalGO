@@ -144,7 +144,7 @@ func (h *odontologoHandler) Patch() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		var r Request
-		idParam := c.Param("id")
+		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			c.JSON(400, gin.H{"error": "invalid id"})
