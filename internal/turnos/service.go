@@ -9,6 +9,7 @@ type Service interface {
 	Create(t domains.Turno) (domains.Turno, error)
 	Delete(id int) error
 	Update(id int, t domains.Turno) (domains.Turno, error)
+	Patch(id int, ut domains.Turno)
 }
 
 type service struct {
@@ -62,4 +63,9 @@ func (s *service) Delete(id int) error {
 		return err
 	}
 	return nil
+}
+
+// SIN IMPLEMENTAR
+func (s *service) Patch(id int, ut domains.Turno) {
+
 }

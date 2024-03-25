@@ -154,7 +154,7 @@ func (h *turnoHandler) Patch() gin.HandlerFunc {
 			//DentistaIDDentista: r.DentistaIDDentista,
 			//PacienteIDPaciente: r.PacienteIDPaciente,
 		}
-		t, err := h.ts.Patch(id, update)
+		t, err := h.ts.Update(id, update)
 		if err != nil {
 			c.JSON(400, gin.H{"error": err.Error()})
 			return
