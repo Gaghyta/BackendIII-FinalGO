@@ -6,6 +6,7 @@ import (
 
 type Service interface {
 	GetByID(id int) (domains.Turno, error)
+	GetByDNI(dni string) (domains.Turno, error)
 	Create(t domains.Turno) (domains.Turno, error)
 	Delete(id int) error
 	Update(id int, t domains.Turno) (domains.Turno, error)
@@ -28,6 +29,15 @@ func (s *service) GetByID(id int) (domains.Turno, error) {
 	}
 	return t, nil
 }
+
+func (s *service) GetByDNI(dni string) (domains.Turno, error) {
+	t, err := s.r.GetByDNI(dni)
+	if err != nil {
+		return domains.Turno{}, err
+	}
+	return t, nil
+}
+
 
 func (s *service) Create(t domains.Turno) (domains.Turno, error) {
 	t, err := s.r.Create(t)

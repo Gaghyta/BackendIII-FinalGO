@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"log"
 	"os"
 
@@ -43,17 +43,19 @@ func main() {
 		log.Fatal("Error decodificando el archivo de configuración:", err)
 	}
 
-	// Construir la cadena de conexión
-	dbConnectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
+	// // Construir la cadena de conexión
+	// dbConnectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
 
-	// Abrir la conexión a la base de datos
-	db, err := sql.Open("mysql", dbConnectionString)
+	// // Abrir la conexión a la base de datos
+	// db, err := sql.Open("mysql", dbConnectionString)
+
+	bd, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
-	defer db.Close()
+	defer bd.Close()
 
-	storageOdontologo := odontologoStore.NewOdontologoSqlStore(db)
+	storageOdontologo := odontologoStore.NewOdontologoSqlStore(bd)
 	repoOdontologos := odontologos.NewRepository(storageOdontologo)
 	serviceOdontologos := odontologos.NewService(repoOdontologos)
 	odontologoHandler := handler.NewOdontologoHandler(serviceOdontologos)
@@ -72,7 +74,7 @@ func main() {
 		odontologos.PUT(":odontologo_id", odontologoHandler.Put())
 	}
 
-	storagePaciente := pacienteStore.NewPacienteSqlStore(db)
+	storagePaciente := pacienteStore.NewPacienteSqlStore(bd)
 	repoPacientes := pacientes.NewRepository(storagePaciente)
 	servicePacientes := pacientes.NewService(repoPacientes)
 	pacienteHandler := handler.NewPacienteHandler(servicePacientes)
@@ -80,14 +82,14 @@ func main() {
 	pacientes := r.Group("/pacientes")
 
 	{
-		pacientes.GET(":id", pacienteHandler.GetByID())
+		pacientes.GET(":paciente_id", pacienteHandler.GetByID())
 		pacientes.POST("", pacienteHandler.Post())
-		pacientes.DELETE(":id", pacienteHandler.DeleteByID())
-		pacientes.PATCH(":id", pacienteHandler.Patch())
-		pacientes.PUT(":id", pacienteHandler.Put())
+		pacientes.DELETE(":paciente_id", pacienteHandler.DeleteByID())
+		pacientes.PATCH(":paciente_id", pacienteHandler.Patch())
+		pacientes.PUT(":paciente_id", pacienteHandler.Put())
 	}
 
-	storageTurno := turnoStore.NewTurnoSqlStore(db)
+	storageTurno := turnoStore.NewTurnoSqlStore(bd)
 	repoTurno := turnos.NewRepository(storageTurno)
 	serviceTurnos := turnos.NewService(repoTurno)
 	turnosHandler := handler.NewTurnoHandler(serviceTurnos)
@@ -95,11 +97,13 @@ func main() {
 	turnos := r.Group("/turnos")
 
 	{
-		turnos.GET(":id", turnosHandler.GetByID())
+		turnos.GET(":turno_id", turnosHandler.GetByID())
+		turnos.GET(":dni", turnosHandler.GetByDNI())
 		turnos.POST("", turnosHandler.Post())
-		turnos.DELETE(":id", turnosHandler.DeleteByID())
-		turnos.PATCH(":id", turnosHandler.Patch())
-		turnos.PUT(":id", turnosHandler.Put())
+		turnos.POST("/dni-matricula", turnosHandler.PostWithDniAndMatricula())
+		turnos.DELETE(":turno_id", turnosHandler.DeleteByID())
+		turnos.PATCH(":turno_id", turnosHandler.Patch())
+		turnos.PUT(":turno_id", turnosHandler.Put())
 	}
 
 	r.Run(":8080")

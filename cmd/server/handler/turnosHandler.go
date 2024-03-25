@@ -5,8 +5,10 @@ import (
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
 
+	Store "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
 )
@@ -21,16 +23,33 @@ func NewTurnoHandler(t turnos.Service) *turnoHandler {
 	}
 }
 
+
 // GetById obtiene un turno por id
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idParam := c.Param("turnos_id")
+		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("Este id es inválido"))
 			return
 		}
 		turno, err := h.ts.GetByID(id)
+		if err != nil {
+			web.Failure(c, 404, errors.New("El turno que estás buscando no ha sido encontrado"))
+		}
+		web.Success(c, 200, turno)
+	}
+}
+
+// GetByDNI obtiene un turno por dni
+func (h *turnoHandler) GetByDNI() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		dniParam := c.Query("dni")
+		if dniParam == "" {
+			web.Failure(c, 400, errors.New("Este dni es inválido"))
+			return
+		}
+		turno, err := h.ts.GetByDNI(dniParam)
 		if err != nil {
 			web.Failure(c, 404, errors.New("El turno que estás buscando no ha sido encontrado"))
 		}
@@ -58,6 +77,45 @@ func (h *turnoHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("JSON inválido"))
 			return
 		}
+		valido, err := validateEmptyTurno(&turno)
+		if !valido {
+			web.Failure(c, 400, err)
+			return
+		}
+		t, err := h.ts.Create(turno)
+		if err != nil {
+			web.Failure(c, 400, err)
+			return
+		}
+		web.Success(c, 201, t)
+	}
+}
+
+func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		type Turno_dni_mat struct {
+			TurnosId          int    `json:"turnos_id"`
+			FechaYHora        string `json:"fecha_y_hora"`
+			Descripcion       string `json:"descripcion"`
+			MatriculaDentista string `json:"matricula_dentista"`
+			DNIPaciente       string `json:"dni_paciente"`
+		}
+		var turno_dni_mat Turno_dni_mat
+
+		err := c.ShouldBindJSON(&turno_dni_mat)
+		if err != nil {
+			web.Failure(c, 400, errors.New("JSON inválido"))
+			return
+		}
+
+
+
+		
+
+
+		
+		var turno domains.Turno
+
 		valido, err := validateEmptyTurno(&turno)
 		if !valido {
 			web.Failure(c, 400, err)

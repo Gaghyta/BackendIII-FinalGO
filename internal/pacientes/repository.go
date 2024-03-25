@@ -4,12 +4,14 @@ import (
 	"errors"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
-	pacienteStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
+	Store "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 )
 
 type Repository interface {
 	// GetByID busca un paciente por su id
 	GetByID(id int) (domains.Paciente, error)
+	// GetByDNI devuelve el id a partir del DNI
+	GetByDNI(dni string) (domains.Paciente, error)
 	// Create actualiza un paciente
 	Create(o domains.Paciente) (domains.Paciente, error)
 	// Update actualiza un paciente
@@ -19,11 +21,12 @@ type Repository interface {
 }
 
 type repository struct {
-	storage pacienteStore.StorePacienteInterface
+	storage Store.StorePacienteInterface
+	// pacienteStore.StorePacienteInterface
 }
 
 // NewRepository crea un nuevo repositorio
-func NewRepository(storage pacienteStore.StorePacienteInterface) Repository {
+func NewRepository(storage Store.StorePacienteInterface) Repository {
 	return &repository{storage}
 }
 
@@ -35,6 +38,15 @@ func (r *repository) GetByID(id int) (domains.Paciente, error) {
 	return product, nil
 
 }
+
+func (r *repository) GetByDNI(dni string) (domains.Paciente, error) {
+	paciente, err := r.storage.GetByDNI(dni)
+	if err != nil {
+		return domains.Paciente{}, errors.New("el paciente buscado no existe")
+	}
+	return paciente, nil
+}
+
 
 func (r *repository) Create(o domains.Paciente) (domains.Paciente, error) {
 	if !r.storage.Exists(o.Dni) {

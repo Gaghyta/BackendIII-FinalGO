@@ -6,6 +6,7 @@ import (
 
 type Service interface {
 	GetByID(id int) (domains.Paciente, error)
+	GetByDNI(dni string) (domains.Paciente, error)
 	Create(o domains.Paciente) (domains.Paciente, error)
 	Update(id int, o domains.Paciente) (domains.Paciente, error)
 	Delete(id int) error
@@ -23,6 +24,14 @@ func NewService(r Repository) Service {
 
 func (s *service) GetByID(id int) (domains.Paciente, error) {
 	o, err := s.r.GetByID(id)
+	if err != nil {
+		return domains.Paciente{}, err
+	}
+	return o, nil
+}
+
+func (s *service) GetByDNI(dni string) (domains.Paciente, error) {
+	o, err := s.r.GetByDNI(dni)
 	if err != nil {
 		return domains.Paciente{}, err
 	}

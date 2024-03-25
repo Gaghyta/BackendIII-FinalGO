@@ -1,4 +1,4 @@
-package odontologoStore
+package Store
 
 import (
 	"database/sql"
@@ -227,6 +227,29 @@ func (s *PacienteSqlStore) Read(id int) (domains.Paciente, error) {
 	return p, nil
 }
 
+func (s *PacienteSqlStore) GetByDNI(dni string) (domains.Paciente, error) {
+	// Consulta para recuperar el paciente con el ID proporcionado
+	query := "SELECT idpaciente FROM pacientes WHERE dni = ?"
+
+	// Ejecutar la consulta y recuperar los datos
+	var p domains.Paciente
+	err := s.db.QueryRow(query, dni).Scan(&p.PacienteID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// El paciente con el ID proporcionado no fue encontrado
+			return domains.Paciente{}, errors.New("paciente no encontrado")
+		}
+		// Ocurrió un error al ejecutar la consulta
+		return domains.Paciente{}, err
+	}
+
+	// Retornar los datos del paciente recuperado
+	return p, nil
+}
+
+
+
+
 func (s *PacienteSqlStore) Create(p domains.Paciente) error {
 	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES (?, ?, ?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
@@ -294,13 +317,40 @@ func (s *PacienteSqlStore) Exists(dni string) bool {
 // **********************************************************************
 // 3 IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE TURNOS
 
-func (s *TurnoSqlStore) Read(id int) (domains.Turno, error) {
+func (s *TurnoSqlStore) ReadById(id int) (domains.Turno, error) {
 	// Consulta para recuperar el turno con el ID proporcionado
-	query := "SELECT dentista_id_dentista FROM turnos WHERE turnos_id = ?"
+	query := "SELECT * FROM turnos WHERE idturno = ?"
 
 	// Ejecutar la consulta y recuperar los datos
 	var t domains.Turno
-	err := s.db.QueryRow(query, id).Scan(&t.TurnosId)
+	err := s.db.QueryRow(query, id).Scan(&t.TurnosId, &t.FechaYHora, t.Descripcion, t.DentistaIDDentista, t.PacienteIDPaciente)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// El paciente con el ID proporcionado no fue encontrado
+			return domains.Turno{}, errors.New("turno no encontrado")
+		}
+		// Ocurrió un error al ejecutar la consulta
+		return domains.Turno{}, err
+	}
+
+	// Retornar los datos del turno recuperado
+	return t, nil
+}
+
+// Recupera de la base de datos los turnos del paciente según DNI
+func (s *TurnoSqlStore) GetByDNI(dni string) (domains.Turno, error) {
+	// Consulta para recuperar el Id del vpaciente con el DNI proporcionado
+	var vpaciente domains.Paciente
+	query := "SELECT idpaciente FROM pacientes WHERE dni = ?"
+	row := s.db.QueryRow(query,dni)
+	err := row.Scan(&vpaciente.PacienteID)
+	if err != nil {
+		return domains.Turno{}, errors.New("No existen pacientes con ese DNI")
+	}
+
+	// Ejecutar la consulta y recuperar los datos
+	var t domains.Turno
+	err = s.db.QueryRow(query, vpaciente.PacienteID).Scan(&t.TurnosId, &t.FechaYHora, t.Descripcion, t.DentistaIDDentista, t.PacienteIDPaciente)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// El paciente con el ID proporcionado no fue encontrado

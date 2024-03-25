@@ -1,4 +1,4 @@
-package odontologoStore
+package Store
 
 import "github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 
@@ -18,6 +18,8 @@ type StoreOdontologoInterface interface {
 type StorePacienteInterface interface {
 	// Read devuelve un paciente por su id
 	Read(id int) (domains.Paciente, error)
+	// ReadByDNI devuelve el id a partir del DNI
+	GetByDNI(dni string) (domains.Paciente, error)
 	// Create agrega un nuevo paciente
 	Create(paciente domains.Paciente) error
 	// Update actualiza un paciente
@@ -29,8 +31,10 @@ type StorePacienteInterface interface {
 }
 
 type StoreTurnoInterface interface {
-	// Read devuelve un turno por su id
-	Read(id int) (domains.Turno, error)
+	// ReadById devuelve un turno por su id
+	ReadById(id int) (domains.Turno, error)
+	// GetByDNI devuelve un turno por su DNI
+	GetByDNI(dni string) (domains.Turno, error)
 	// Create agrega un nuevo turno
 	Create(turno domains.Turno) error
 	// Update actualiza un turno

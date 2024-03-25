@@ -11,6 +11,9 @@ import (
 type Repository interface {
 	// GetByID busca un paciente por su id
 	GetByID(id int) (domains.Turno, error)
+	// GetByDNI busca un turno por su DNI
+	GetByDNI(dni string) (domains.Turno, error)
+	// Create hace un post
 	Create(o domains.Turno) (domains.Turno, error)
 	// Update actualiza un paciente
 	Update(id int, p domains.Turno) (domains.Turno, error)
@@ -28,13 +31,25 @@ func NewRepository(storage turnoStore.StoreTurnoInterface) Repository {
 }
 
 func (r *repository) GetByID(id int) (domains.Turno, error) {
-	objturno, err := r.storage.Read(id)
+	objturno, err := r.storage.ReadById(id)
 	if err != nil {
-		return domains.Turno{}, errors.New("El odontólogo buscado no existe")
+		return domains.Turno{}, errors.New("El turno buscado no existe")
 	}
 	return objturno, nil
 
 }
+
+func (r *repository) GetByDNI(dni string) (domains.Turno, error) {
+	objturno, err := r.storage.GetByDNI(dni)
+	if err != nil {
+		return domains.Turno{}, errors.New("El turno buscado no existe")
+	}
+	return objturno, nil
+
+}
+
+
+
 
 func (r *repository) Create(t domains.Turno) (domains.Turno, error) {
 	if r.storage.Exists(t.FechaYHora, t.DentistaIDDentista) {
