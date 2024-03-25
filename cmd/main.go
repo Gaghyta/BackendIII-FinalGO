@@ -3,7 +3,8 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	// "fmt"
+
+	"fmt"
 	"log"
 	"os"
 
@@ -44,12 +45,11 @@ func main() {
 	}
 
 	// // Construir la cadena de conexión
-	// dbConnectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
+	dbConnectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
 
 	// // Abrir la conexión a la base de datos
-	// db, err := sql.Open("mysql", dbConnectionString)
+	bd, err := sql.Open("mysql", dbConnectionString)
 
-	bd, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
@@ -97,10 +97,10 @@ func main() {
 	turnos := r.Group("/turnos")
 
 	{
-		turnos.GET(":turno_id", turnosHandler.GetByID())
+		//turnos.GET(":turno_id", turnosHandler.GetByID())
 		turnos.GET(":dni", turnosHandler.GetByDNI())
 		turnos.POST("", turnosHandler.Post())
-		turnos.POST("/dni-matricula", turnosHandler.PostWithDniAndMatricula())
+		//turnos.POST("/dni-matricula", turnosHandler.PostWithDniAndMatricula())
 		turnos.DELETE(":turno_id", turnosHandler.DeleteByID())
 		turnos.PATCH(":turno_id", turnosHandler.Patch())
 		turnos.PUT(":turno_id", turnosHandler.Put())

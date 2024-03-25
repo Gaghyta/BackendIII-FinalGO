@@ -120,7 +120,7 @@ func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) 
 	}
 	query := "UPDATE odontologos SET"
 	if odontologoInput.OdontologoId > 0 {
-		query += " odontologo_id = '" + string(odontologoInput.OdontologoId) + "',"
+		query += " odontologo_id = '" + fmt.Sprint(odontologoInput.OdontologoId) + "',"
 	}
 	if odontologoInput.NombreOdontologo != "" {
 		query += " apellido_odontologo = '" + odontologoInput.NombreOdontologo + "',"
@@ -145,7 +145,8 @@ func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) 
 	}
 
 	// obtengo el recurso actualizado
-	updatedOdontologo, err := s.GetByID(id)
+	updatedOdontologo, _ := s.GetByID(id)
+
 	return updatedOdontologo, nil
 }
 
