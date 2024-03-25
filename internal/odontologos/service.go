@@ -11,7 +11,7 @@ type Service interface {
 	Create(o domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
 	Update(id int, o domains.Odontologo) (domains.Odontologo, error)
-	//Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
+	Patch(id int, uO domains.Odontologo) (domains.Odontologo, error)
 }
 
 type service struct {
@@ -71,4 +71,26 @@ func (s *service) Delete(id int) error {
 		return err
 	}
 	return nil
+}
+
+func (s *service) Patch(id int, uO domains.Odontologo) (domains.Odontologo, error) {
+	o, err := s.r.GetByID(id)
+	if err != nil {
+		return domains.Odontologo{}, err
+	}
+	if uO.ApellidoOdontologo != "" {
+		o.ApellidoOdontologo = uO.ApellidoOdontologo
+	}
+	if uO.NombreOdontologo != "" {
+		o.NombreOdontologo = uO.NombreOdontologo
+	}
+	if uO.Matricula != "" {
+		o.Matricula = uO.Matricula
+	}
+
+	o, err = s.r.Update(id, o)
+	if err != nil {
+		return domains.Odontologo{}, err
+	}
+	return o, nil
 }

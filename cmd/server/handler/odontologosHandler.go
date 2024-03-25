@@ -16,7 +16,7 @@ type odontologoHandler struct {
 }
 
 // NewProductHandler crea un nuevo controller de productos
-func NewProductHandler(s odontologos.Service) *odontologoHandler {
+func NewOdontologoHandler(s odontologos.Service) *odontologoHandler {
 	return &odontologoHandler{
 		s: s,
 	}

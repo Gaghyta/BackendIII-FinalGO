@@ -23,7 +23,7 @@ type repository struct {
 }
 
 // NewRepository crea un nuevo repositorio
-func NewTurnosRepository(storage turnoStore.StoreTurnoInterface) Repository {
+func NewRepository(storage turnoStore.StoreTurnoInterface) Repository {
 	return &repository{storage}
 }
 

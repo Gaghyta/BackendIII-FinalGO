@@ -42,7 +42,8 @@ func NewTurnoSqlStore(db *sql.DB) StoreTurnoInterface {
 	}
 }
 
-// IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE
+// **********************************************************************
+// 3 IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE ODONTOLOGOS
 
 func (s *OdontologoSqlStore) Read(id int) (domains.Odontologo, error) {
 	// Consulta para recuperar el odontólogo con el ID proporcionado
@@ -127,7 +128,9 @@ func (s *OdontologoSqlStore) Exists(matricula string) bool {
 	return odontologo, nil
 } */
 
-// IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE PACIENTES
+// **********************************************************************
+// 2 IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE PACIENTES
+
 func (s *PacienteSqlStore) Read(id int) (domains.Paciente, error) {
 	// Consulta para recuperar el paciente con el ID proporcionado
 	query := "SELECT nombre, apellido, domicilio, dni, fecha_de_alta FROM pacientes WHERE paciente_id = ?"
@@ -213,7 +216,8 @@ func (s *PacienteSqlStore) Exists(dni string) bool {
 	return exists
 }
 
-// IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE TURNOS
+// **********************************************************************
+// 3 IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE TURNOS
 
 func (s *TurnoSqlStore) Read(id int) (domains.Turno, error) {
 	// Consulta para recuperar el turno con el ID proporcionado
@@ -286,7 +290,7 @@ func (s *TurnoSqlStore) Delete(id int) error {
 	return nil
 }
 
-func (s *TurnoSqlStore) Exists(fecha_y_hora string) bool {
+func (s *TurnoSqlStore) Exists(fecha_y_hora string, odontologo int) bool {
 	var exists bool
 	var id int
 	query := "SELECT turnos_id FROM pacientes WHERE fecha_y_hora = ?;"

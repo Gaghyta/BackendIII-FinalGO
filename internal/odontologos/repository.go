@@ -22,7 +22,7 @@ type repository struct {
 }
 
 // NewRepository crea un nuevo repositorio
-func NewOdontologoRepository(storage odontologoStore.StoreOdontologoInterface) Repository {
+func NewRepository(storage odontologoStore.StoreOdontologoInterface) Repository {
 	return &repository{storage}
 }
 

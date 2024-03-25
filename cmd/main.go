@@ -10,11 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/cmd/server/handler"
-	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store/odontologoStore"
+	odontologoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
+	odontologos "github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
+	pacientes "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	//"github.com/go-sql-driver/mysql"
-	//"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 )
 
 type Config struct {
@@ -26,11 +26,6 @@ type Config struct {
 }
 
 func main() {
-
-	/*bd, err := sql.Open("mysql", "root:yokit@11@tcp(localhost:3306)/turnero_odontologos")
-	if err != nil {
-		log.Fatal(err)
-	}*/
 
 	configFile, err := os.Open("/Users/gaghy/Desktop/BackendIIIFinalGO/config/config.json")
 	if err != nil {
@@ -54,35 +49,56 @@ func main() {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
 
-	storageOdontologo := odontologoStore.NewSqlStore(db)
+	storageOdontologo := odontologoStore.NewOdontologoSqlStore(db)
 	repoOdontologos := odontologos.NewRepository(storageOdontologo)
 	serviceOdontologos := odontologos.NewService(repoOdontologos)
-	odontologoHandler := handler.NewProductHandler(serviceOdontologos)
+	odontologoHandler := handler.NewOdontologoHandler(serviceOdontologos)
 
 	defer db.Close()
 	r := gin.Default()
 
 	r.GET("/ping", func(c *gin.Context) { c.String(200, "pong") })
 
-	//pacientes := r.Group("/pacientes")
-
-	/* {
-		pacientes.GET(":id", pacienteHandler.GetByID())
-		pacientes.POST("", pacienteHandler.Post())
-		pacientes.DELETE(":id", pacienteHandler.Delete())
-		pacientes.PATCH(":id", pacienteHandler.Patch())
-		pacientes.PUT(":id", pacienteHandler.Put())
-	}
-	*/
 	odontologos := r.Group("/odontologos")
 
 	{
 		odontologos.GET(":id", odontologoHandler.GetByID())
 		odontologos.POST("", odontologoHandler.Post())
 		odontologos.DELETE(":id", odontologoHandler.DeleteByID())
-		//odontologos.PATCH(":matricula", odontologoHandler.Patch())
+		odontologos.PATCH(":matricula", odontologoHandler.Patch())
 		odontologos.PUT(":id", odontologoHandler.Put())
 	}
+
+	storagePaciente := odontologoStore.NewPacienteSqlStore(db)
+	repoPacientes := pacientes.NewRepository(storagePaciente)
+	servicePacientes := pacientes.NewService(repoPacientes)
+	pacienteHandler := handler.NewPacienteHandler(servicePacientes)
+
+	pacientes := r.Group("/pacientes")
+
+	{
+		pacientes.GET(":id", pacienteHandler.GetByID())
+		pacientes.POST("", pacienteHandler.Post())
+		pacientes.DELETE(":id", pacienteHandler.Delete())
+		pacientes.PATCH(":id", pacienteHandler.Patch())
+		pacientes.PUT(":id", pacienteHandler.Put())
+	}
+
+	/*
+		storageTurno := turnoStore.NewSqlStore(db)
+		repoTurno := turnos.NewRepository(storageTurno)
+		serviceTurnos := turnos.NewService(repoTurno)
+		turnosHandler := handler.NewTurnoHandler(serviceTurnos)
+
+		turnos := r.Group("/turnos")
+
+		{
+			turnos.GET(":id", turnosHandler.GetByID())
+			turnos.POST("", turnosHandler.Post())
+			turnos.DELETE(":id", turnosHandler.Delete())
+			turnos.PATCH(":id", turnosHandler.Patch())
+			turnos.PUT(":id", turnosHandler.Put())
+		}*/
 
 	r.Run(":8080")
 

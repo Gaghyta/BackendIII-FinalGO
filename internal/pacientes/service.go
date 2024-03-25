@@ -9,6 +9,7 @@ type Service interface {
 	Create(o domains.Paciente) (domains.Paciente, error)
 	Delete(id int) error
 	Update(id int, o domains.Paciente) (domains.Paciente, error)
+	Patch(id int, p domains.Paciente) (domains.Paciente, error)
 }
 
 type service struct {
@@ -62,4 +63,31 @@ func (s *service) Delete(id int) error {
 		return err
 	}
 	return nil
+}
+
+func (s *service) Patch(id int, uP domains.Paciente) (domains.Paciente, error) {
+	p, err := s.r.GetByID(id)
+	if err != nil {
+		return domains.Paciente{}, err
+	}
+	if uP.NombrePaciente != "" {
+		p.NombrePaciente = uP.NombrePaciente
+	}
+	if uP.ApellidoPaciente != "" {
+		p.ApellidoPaciente = uP.ApellidoPaciente
+	}
+	if uP.DomicilioPaciente != "" {
+		p.DomicilioPaciente = uP.DomicilioPaciente
+	}
+	if uP.Dni != "" {
+		p.Dni = uP.Dni
+	}
+	if uP.FechaDeAlta != "" {
+		p.FechaDeAlta = uP.FechaDeAlta
+	}
+	p, err = s.r.Update(id, p)
+	if err != nil {
+		return domains.Paciente{}, err
+	}
+	return p, nil
 }

@@ -23,14 +23,14 @@ type repository struct {
 }
 
 // NewRepository crea un nuevo repositorio
-func NewPacienteRepository(storage pacienteStore.StorePacienteInterface) Repository {
+func NewRepository(storage pacienteStore.StorePacienteInterface) Repository {
 	return &repository{storage}
 }
 
 func (r *repository) GetByID(id int) (domains.Paciente, error) {
 	product, err := r.storage.Read(id)
 	if err != nil {
-		return domains.Paciente{}, errors.New("El paciente buscado no existe")
+		return domains.Paciente{}, errors.New("el paciente buscado no existe")
 	}
 	return product, nil
 
