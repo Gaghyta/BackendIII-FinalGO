@@ -11,9 +11,12 @@ import (
 
 	"github.com/Gaghyta/BackendIIIFinalGO/cmd/server/handler"
 	odontologoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
+	pacienteStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
+	turnoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 
 	odontologos "github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	pacientes "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
 	//"github.com/go-sql-driver/mysql"
 )
 
@@ -69,7 +72,7 @@ func main() {
 		odontologos.PUT(":id", odontologoHandler.Put())
 	}
 
-	storagePaciente := odontologoStore.NewPacienteSqlStore(db)
+	storagePaciente := pacienteStore.NewPacienteSqlStore(db)
 	repoPacientes := pacientes.NewRepository(storagePaciente)
 	servicePacientes := pacientes.NewService(repoPacientes)
 	pacienteHandler := handler.NewPacienteHandler(servicePacientes)
@@ -84,21 +87,20 @@ func main() {
 		pacientes.PUT(":id", pacienteHandler.Put())
 	}
 
-	/*
-		storageTurno := turnoStore.NewSqlStore(db)
-		repoTurno := turnos.NewRepository(storageTurno)
-		serviceTurnos := turnos.NewService(repoTurno)
-		turnosHandler := handler.NewTurnoHandler(serviceTurnos)
+	storageTurno := turnoStore.NewSqlStore(db)
+	repoTurno := turnos.NewRepository(storageTurno)
+	serviceTurnos := turnos.NewService(repoTurno)
+	turnosHandler := handler.NewTurnoHandler(serviceTurnos)
 
-		turnos := r.Group("/turnos")
+	turnos := r.Group("/turnos")
 
-		{
-			turnos.GET(":id", turnosHandler.GetByID())
-			turnos.POST("", turnosHandler.Post())
-			turnos.DELETE(":id", turnosHandler.Delete())
-			turnos.PATCH(":id", turnosHandler.Patch())
-			turnos.PUT(":id", turnosHandler.Put())
-		}*/
+	{
+		turnos.GET(":id", turnosHandler.GetByID())
+		turnos.POST("", turnosHandler.Post())
+		turnos.DELETE(":id", turnosHandler.DeleteByID())
+		turnos.PATCH(":id", turnosHandler.Patch())
+		turnos.PUT(":id", turnosHandler.Put())
+	}
 
 	r.Run(":8080")
 
