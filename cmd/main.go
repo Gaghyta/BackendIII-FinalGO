@@ -87,7 +87,7 @@ func main() {
 		pacientes.PUT(":id", pacienteHandler.Put())
 	}
 
-	storageTurno := turnoStore.NewSqlStore(db)
+	storageTurno := turnoStore.NewTurnoSqlStore(db)
 	repoTurno := turnos.NewRepository(storageTurno)
 	serviceTurnos := turnos.NewService(repoTurno)
 	turnosHandler := handler.NewTurnoHandler(serviceTurnos)
