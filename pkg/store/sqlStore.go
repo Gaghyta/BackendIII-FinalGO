@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	//"fmt"
+	"fmt"
 	"log"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
@@ -65,6 +65,18 @@ func (s *OdontologoSqlStore) Read(id int) (domains.Odontologo, error) {
 	return o, nil
 }
 
+func (s *OdontologoSqlStore) GetByID(id int) (domains.Odontologo, error) {
+	var odontologoEncontrado domains.Odontologo
+
+	query := fmt.Sprintf("SELECT * FROM odontologos WHERE id = %d", id)
+	row := s.db.QueryRow(query)
+	err := row.Scan(&odontologoEncontrado.OdontologoId, &odontologoEncontrado.ApellidoOdontologo, &odontologoEncontrado.NombreOdontologo, &odontologoEncontrado.Matricula)
+	if err != nil {
+		return domains.Odontologo{}, err
+	}
+	return odontologoEncontrado, nil
+}
+
 func (s *OdontologoSqlStore) Create(p domains.Odontologo) error {
 	query := "INSERT INTO odontologos (apellido_odontologo, nombre_odontologo, matricula) VALUES (?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
@@ -80,7 +92,7 @@ func (s *OdontologoSqlStore) Create(p domains.Odontologo) error {
 	return nil
 }
 
-func (s *OdontologoSqlStore) Update(o domains.Odontologo) error {
+/* func (s *OdontologoSqlStore) Update(o domains.Odontologo) error {
 	query := "UPDATE odontologos SET apellido_odontologo = ?, nombre_odontologo = ?, matricula = ? WHERE odontologo_id = ?"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
@@ -93,6 +105,48 @@ func (s *OdontologoSqlStore) Update(o domains.Odontologo) error {
 	}
 
 	return nil
+} */
+
+func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) (domains.Odontologo, error) {
+
+	_, err := s.db.Query("SELECT * FROM odontologos WHERE odontologos_id = ?", id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			fmt.Println("El Odontologo no existe en la base de datos:", err)
+		} else {
+			fmt.Println("Error al ejecutar la consulta:", err)
+		}
+		return domains.Odontologo{}, err
+	}
+	query := "UPDATE odontologos SET"
+	if odontologoInput.OdontologoId > 0 {
+		query += " id = '" + string(odontologoInput.OdontologoId) + "',"
+	}
+	if odontologoInput.NombreOdontologo != "" {
+		query += " nombre = '" + odontologoInput.NombreOdontologo + "',"
+	}
+	if odontologoInput.ApellidoOdontologo != "" {
+		query += " apellido = '" + odontologoInput.ApellidoOdontologo + "',"
+	}
+	if odontologoInput.Matricula != "" {
+		query += " matricula = '" + odontologoInput.Matricula + "',"
+	}
+
+	query = query[0 : len(query)-1]
+	query += " WHERE odontologo_id = ?"
+
+	fmt.Println(query)
+	// actualizo el odontologo
+	_, err = s.db.Exec(query, id)
+
+	if err != nil {
+		fmt.Println("Error al ejecutar la consulta:", err)
+		return domains.Odontologo{}, err
+	}
+
+	// obtengo el recurso actualizado
+	updatedOdontologo, err := s.GetByID(id)
+	return updatedOdontologo, nil
 }
 
 func (s *OdontologoSqlStore) Delete(id int) error {
@@ -124,6 +178,30 @@ func (s *OdontologoSqlStore) Exists(matricula string) bool {
 	}
 	return exists
 }
+
+/* func (r *repository) Patch(c context.Context, id int, campos map[string]interface{}) (*domains.Odontologo, error) {
+	odontologo, err := r.GetByID (id)
+	if err != nil {
+		return nil, err
+	}
+	for campo, valor := range campos {
+		switch campo {
+		case "apellido_odontologo":
+			odontologo.ApellidoOdontologo = valor.(string)
+		case "nombre_odontologo":
+			odontologo.NombreOdontologo = valor.(string)
+		case "matricula":
+			odontologo.Matricula = valor.(string)
+		}
+	}
+	var (QueryUpdateOdontologo = `UPDATE turnos_odontologos SET apellido_odontologo = ? ,nombre_odontologo = ? , matricula = ?
+	FROM my_db.odontologos WHERE id = ?`)
+	_, err = r.db.ExecContext(c, QueryUpdateOdontologo, odontologo.ApellidoOdontologo, odontologo.NombreOdontologo, odontologo.Matricula, odontologo.OdontologoId)
+	if err != nil {
+		return nil, err
+	}
+	return &odontologo, nil
+} */
 
 // **********************************************************************
 // 2 IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE PACIENTES

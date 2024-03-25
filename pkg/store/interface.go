@@ -8,7 +8,7 @@ type StoreOdontologoInterface interface {
 	// Create agrega un nuevo odontólogo
 	Create(odontologo domains.Odontologo) error
 	// Update actualiza un odontólogo
-	Update(odontologo domains.Odontologo) error
+	Update(id int, odontologo domains.Odontologo) (domains.Odontologo, error)
 	// Delete elimina un odontólogo
 	Delete(id int) error
 	// Exists verifica si un odontólogo existe

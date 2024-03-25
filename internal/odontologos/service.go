@@ -10,7 +10,7 @@ type Service interface {
 	GetByID(id int) (domains.Odontologo, error)
 	Create(o domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
-	Update(id int, o domains.Odontologo) (domains.Odontologo, error)
+	Update(id int, uO domains.Odontologo) (domains.Odontologo, error)
 }
 
 type service struct {

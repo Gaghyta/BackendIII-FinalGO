@@ -11,7 +11,7 @@ import (
 type Repository interface {
 	GetByID(id int) (domains.Odontologo, error)
 	Create(p domains.Odontologo) (domains.Odontologo, error)
-	Update(id int, p domains.Odontologo) (domains.Odontologo, error)
+	Update(id int, uO domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
 	//Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
 	//GetByMatricula(matricula string) (string, error)
@@ -46,15 +46,15 @@ func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	return o, nil
 }
 
-func (r *repository) Update(id int, o domains.Odontologo) (domains.Odontologo, error) {
-	if !r.storage.Exists(o.Matricula) {
-		return domains.Odontologo{}, errors.New("la matrícula ingresado existe")
+func (r *repository) Update(id int, uO domains.Odontologo) (domains.Odontologo, error) {
+	if !r.storage.Exists(uO.Matricula) {
+		return domains.Odontologo{}, errors.New("la matrícula ingresada existe")
 	}
-	err := r.storage.Update(o)
+	err := r.storage.Create(uO)
 	if err != nil {
 		return domains.Odontologo{}, errors.New("error modificando el odontólogo")
 	}
-	return o, nil
+	return uO, nil
 }
 
 func (r *repository) Delete(id int) error {
