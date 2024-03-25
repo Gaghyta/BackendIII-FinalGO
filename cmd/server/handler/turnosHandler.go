@@ -5,10 +5,10 @@ import (
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
-	"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
+	//"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
 
-	Store "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
+	//Store "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
 )
@@ -23,11 +23,10 @@ func NewTurnoHandler(t turnos.Service) *turnoHandler {
 	}
 }
 
-
 // GetById obtiene un turno por id
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idParam := c.Param("id")
+		idParam := c.Param("turnos_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("Este id es inválido"))
@@ -108,12 +107,6 @@ func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 			return
 		}
 
-
-
-		
-
-
-		
 		var turno domains.Turno
 
 		valido, err := validateEmptyTurno(&turno)
