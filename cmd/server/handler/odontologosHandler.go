@@ -25,7 +25,7 @@ func NewOdontologoHandler(s odontologos.Service) *odontologoHandler {
 // Get obtiene un odontólogo por id
 func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idParam := c.Param("id")
+		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("este id es inválido"))

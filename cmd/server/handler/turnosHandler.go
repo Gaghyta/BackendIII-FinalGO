@@ -5,16 +5,17 @@ import (
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
+
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
-	turno "github.com/Gaghyta/desafio-Especializacion-Backend-Go/cmd/internal/turnos"
 	"github.com/gin-gonic/gin"
 )
 
 type turnoHandler struct {
-	ts turno.Service
+	ts turnos.Service
 }
 
-func NewTurnoHandler(t turno.Service) *turnoHandler {
+func NewTurnoHandler(t turnos.Service) *turnoHandler {
 	return &turnoHandler{
 		ts: t,
 	}
