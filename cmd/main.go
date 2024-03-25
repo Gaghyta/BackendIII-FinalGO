@@ -65,11 +65,11 @@ func main() {
 	odontologos := r.Group("/odontologos")
 
 	{
-		odontologos.GET(":id", odontologoHandler.GetByID())
+		odontologos.GET(":odontologo_id", odontologoHandler.GetByID())
 		odontologos.POST("", odontologoHandler.Post())
-		odontologos.DELETE(":id", odontologoHandler.DeleteByID())
-		odontologos.PATCH(":id", odontologoHandler.Patch())
-		odontologos.PUT(":id", odontologoHandler.Put())
+		odontologos.DELETE(":odontologo_id", odontologoHandler.DeleteByID())
+		odontologos.PATCH(":odontologo_id", odontologoHandler.Patch())
+		odontologos.PUT(":odontologo_id", odontologoHandler.Put())
 	}
 
 	storagePaciente := pacienteStore.NewPacienteSqlStore(db)

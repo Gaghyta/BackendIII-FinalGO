@@ -78,7 +78,7 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		// Obtener el ID del odontólogo de la URL
-		idParam := c.Param("id")
+		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("invalid ID"))
@@ -115,7 +115,7 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Obtener el ID del odontólogo de la URL
-		idParam := c.Param("id")
+		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("ID inválido"))
@@ -160,7 +160,7 @@ func (h *odontologoHandler) Patch() gin.HandlerFunc {
 			NombreOdontologo:   r.NombreOdontologo,
 			Matricula:          r.Matricula,
 		}
-		o, err := h.s.Patch(id, update)
+		o, err := h.s.Update(id, update)
 		if err != nil {
 			c.JSON(400, gin.H{"error": err.Error()})
 			return

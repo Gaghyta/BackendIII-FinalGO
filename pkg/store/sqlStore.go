@@ -111,22 +111,19 @@ func (s *OdontologoSqlStore) Delete(id int) error {
 }
 
 func (s *OdontologoSqlStore) Exists(matricula string) bool {
-	return true
-}
-
-/* func (s *OdontologoSqlStore) GetByMatricula(matricula string) (domains.Odontologo, error) {
-	var odontologo domains.Odontologo
-	query := "SELECT * FROM odontologos WHERE matricula = ?"
-	err := s.db.QueryRow(query, matricula).Scan(&odontologo.Matricula, &odontologo.NombreOdontologo, &odontologo.ApellidoOdontologo)
-
+	var exists bool
+	var id int
+	query := "SELECT odontologo_id FROM odontologos WHERE matricula = ?;"
+	row := s.db.QueryRow(query, matricula)
+	err := row.Scan(&id)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return domains.Odontologo{}, fmt.Errorf("odontólogo con matrícula %s no encontrado", matricula)
-		}
-		return domains.Odontologo{}, fmt.Errorf("error al obtener odontólogo por matrícula %s: %s", matricula, err.Error())
+		return false
 	}
-	return odontologo, nil
-} */
+	if id > 0 {
+		exists = true
+	}
+	return exists
+}
 
 // **********************************************************************
 // 2 IMPLEMENTACIÓN DE MÉTODOS DE LA INTERFACE DE PACIENTES
