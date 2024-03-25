@@ -2,7 +2,6 @@ package odontologos
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/store/odontologoStore"
 
@@ -15,7 +14,7 @@ type Repository interface {
 	Update(id int, p domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
 	//Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
-	GetByMatricula(matricula string) (domains.Odontologo, error)
+	//GetByMatricula(matricula string) (string, error)
 }
 
 type repository struct {
@@ -64,36 +63,4 @@ func (r *repository) Delete(id int) error {
 		return err
 	}
 	return nil
-}
-
-func (r *repository) GetByMatricula(matricula string) (domains.Odontologo, error) {
-
-	odontologo, err := r.storage.GetByMatricula(matricula)
-	if err != nil {
-		// Manejo de errores si ocurre algún problema al obtener el odontólogo por matrícula
-		//return domains.Odontologo{}, fmt.Errorf("error al obtener odontólogo por matrícula %s: %s", matricula, err.Error())
-		return domains.Odontologo{}, fmt.Errorf("error acá en GetByMatricula")
-	}
-
-	// Verificar si se encontró el odontólogo
-	if odontologo.Matricula == "" {
-		return domains.Odontologo{}, fmt.Errorf("odontólogo con matrícula %s no encontrado", matricula)
-	}
-
-	// Devolver el odontólogo encontrado
-	return odontologo, nil
-}
-
-func (r *repository) Patch(matricula string) (domains.Odontologo, error) {
-	odontologo, err := r.storage.GetByMatricula(matricula)
-	if err != nil {
-		// Manejo de error si ocurre algún problema al obtener el odontólogo por matrícula
-		return domains.Odontologo{}, fmt.Errorf("HAYYYYY %s: %s", matricula, err.Error())
-	}
-
-	if odontologo.Matricula == "" {
-		return domains.Odontologo{}, fmt.Errorf("odontólogo con matrícula %s no encontrado", matricula)
-	}
-
-	return odontologo, nil
 }

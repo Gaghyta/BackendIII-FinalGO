@@ -4,8 +4,6 @@ import (
 	"errors"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
-
-	"fmt"
 )
 
 type Service interface {
@@ -13,7 +11,7 @@ type Service interface {
 	Create(o domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
 	Update(id int, o domains.Odontologo) (domains.Odontologo, error)
-	Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
+	//Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
 }
 
 type service struct {
@@ -73,27 +71,4 @@ func (s *service) Delete(id int) error {
 		return err
 	}
 	return nil
-}
-
-func (s *service) Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error) {
-
-	odontologo, err := s.r.GetByMatricula(matricula)
-	if err != nil {
-		return domains.Odontologo{}, fmt.Errorf("error en patch service al obtener odontólogo")
-	}
-
-	// Actualizar la matrícula del odontólogo
-	odontologo.Matricula = nuevaMatricula
-
-	if odontologo.Matricula == "" {
-		return domains.Odontologo{}, fmt.Errorf("odontólogo con matrícula no encontrada")
-	}
-
-	// Actualizar el odontólogo en la base de datos
-	_, err = s.r.Update(odontologo.OdontologoId, odontologo)
-	if err != nil {
-		return domains.Odontologo{}, fmt.Errorf("error al actualizar")
-	}
-
-	return odontologo, nil
 }
