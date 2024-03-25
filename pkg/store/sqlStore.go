@@ -26,7 +26,7 @@ type PacienteSqlStore struct {
 	db *sql.DB
 }
 
-func NewPacienteSqlStore(db *sql.DB) StoreTurnoInterface {
+func NewPacienteSqlStore(db *sql.DB) StorePacienteInterface {
 	return &PacienteSqlStore{
 		db: db,
 	}
