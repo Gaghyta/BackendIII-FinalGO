@@ -38,7 +38,7 @@ func (r *repository) GetByID(id int) (domains.Paciente, error) {
 
 func (r *repository) Create(o domains.Paciente) (domains.Paciente, error) {
 	if !r.storage.Exists(o.Dni) {
-		return domains.Paciente{}, errors.New("el DNI ya existe en nuestra base de datos. Por favor, revíselo.")
+		return domains.Paciente{}, errors.New("el DNI ya existe en nuestra base de datos")
 	}
 	err := r.storage.Create(o)
 	if err != nil {
