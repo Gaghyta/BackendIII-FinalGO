@@ -9,8 +9,6 @@ import (
 
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
-
-	"net/http"
 )
 
 type odontologoHandler struct {
@@ -135,7 +133,7 @@ func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 	}
 }
 
-func (h *odontologoHandler) Patch() gin.HandlerFunc {
+/* func (h *odontologoHandler) Patch() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Obtener los datos del cuerpo de la solicitud
 		var patchData struct {
@@ -160,4 +158,4 @@ func (h *odontologoHandler) Patch() gin.HandlerFunc {
 		// Si no hay errores, responder con el objeto odontólogo actualizado
 		web.Success(c, http.StatusOK, odontologo)
 	}
-}
+} */
