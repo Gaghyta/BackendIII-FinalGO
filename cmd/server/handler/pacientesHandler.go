@@ -29,7 +29,7 @@ func NewPacienteHandler(p paciente.Service) *pacienteHandler {
 // GetById obtiene un paciente por id
 func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		idParam := ctx.Param("id")
+		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(ctx, 400, errors.New("Este Id es inválido"))
@@ -80,7 +80,7 @@ func (h *pacienteHandler) Post() gin.HandlerFunc {
 func (h *pacienteHandler) Put() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// Obtener el Id del paciente de la URL
-		idParam := ctx.Param("id")
+		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(ctx, 400, errors.New("Id inválido"))
@@ -113,7 +113,7 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 func (h *pacienteHandler) DeleteByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// Obtener el Id del paciente de la URL
-		idParam := ctx.Param("id")
+		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(ctx, 400, errors.New("ID inválido"))
@@ -142,7 +142,7 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 	}
 	return func(ctx *gin.Context) {
 		var r Request
-		idParam := ctx.Param("id")
+		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": "invalid id"})
