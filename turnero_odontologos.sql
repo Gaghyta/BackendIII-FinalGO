@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `turnos-odontologia` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `turnos-odontologia`;
+CREATE DATABASE  IF NOT EXISTS `turnero_odontologos` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `turnero_odontologos`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: turnero_odontologos
@@ -25,11 +25,11 @@ DROP TABLE IF EXISTS `odontologos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `odontologos` (
-  `idodontologo` int NOT NULL AUTO_INCREMENT,
-  `apellido` varchar(45) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
+  `odontologo_id` int NOT NULL AUTO_INCREMENT,
+  `apellido_odontologo` varchar(45) NOT NULL,
+  `nombre_odontoogo` varchar(45) NOT NULL,
   `matricula` varchar(10) NOT NULL,
-  PRIMARY KEY (`idodontologo`),
+  PRIMARY KEY (`odontologo_id`),
   UNIQUE KEY `matricula_UNIQUE` (`matricula`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -51,13 +51,13 @@ DROP TABLE IF EXISTS `pacientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pacientes` (
-  `idpaciente` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `apellido` varchar(45) NOT NULL,
+  `paciente_id` int NOT NULL AUTO_INCREMENT,
+  `nombre_paciente` varchar(45) NOT NULL,
+  `apellido_paciente` varchar(45) NOT NULL,
   `domicilio` varchar(45) NOT NULL,
   `dni` varchar(10) NOT NULL,
   `fecha_de_alta` varchar(10) NOT NULL,
-  PRIMARY KEY (`idpaciente`),
+  PRIMARY KEY (`paciente_id`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -79,12 +79,12 @@ DROP TABLE IF EXISTS `turno`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `turno` (
-  `idturno` int NOT NULL AUTO_INCREMENT,
+  `turno_id` int NOT NULL AUTO_INCREMENT,
   `fecha_y_hora` varchar(45) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `id_paciente` int NOT NULL,
-  `id_odontologo` int NOT NULL,
-  PRIMARY KEY (`idturno`)
+  `dni_paciente` varchar(45) NOT NULL,
+  `matricula_odontologo` varchar(45) NOT NULL,
+  PRIMARY KEY (`turno_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
