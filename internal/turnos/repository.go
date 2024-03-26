@@ -48,9 +48,6 @@ func (r *repository) GetByDNI(dni string) (domains.Turno, error) {
 
 }
 
-
-
-
 func (r *repository) Create(t domains.Turno) (domains.Turno, error) {
 	if r.storage.Exists(t.FechaYHora, t.DentistaIDDentista) {
 		return domains.Turno{}, errors.New("El odontólogo tiene un turno asignado en ese horario en nuestra base de datos. Por favor, revíselo.")
