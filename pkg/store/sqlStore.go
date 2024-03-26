@@ -77,14 +77,14 @@ func (s *OdontologoSqlStore) GetByID(id int) (domains.Odontologo, error) {
 	return odontologoEncontrado, nil
 }
 
-func (s *OdontologoSqlStore) Create(p domains.Odontologo) error {
+func (s *OdontologoSqlStore) Create(o domains.Odontologo) error {
 	query := "INSERT INTO odontologos (apellido_odontologo, nombre_odontologo, matricula) VALUES (?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = stmt.Exec(p.ApellidoOdontologo, p.NombreOdontologo, p.Matricula)
+	_, err = stmt.Exec(o.ApellidoOdontologo, o.NombreOdontologo, o.Matricula)
 	if err != nil {
 		log.Fatal(err)
 	}
