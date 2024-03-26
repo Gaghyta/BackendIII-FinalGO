@@ -68,7 +68,7 @@ func (s *OdontologoSqlStore) Read(id int) (domains.Odontologo, error) {
 func (s *OdontologoSqlStore) GetByID(id int) (domains.Odontologo, error) {
 	var odontologoEncontrado domains.Odontologo
 
-	query := fmt.Sprintf("SELECT * FROM odontologos WHERE id = %d", id)
+	query := fmt.Sprintf("SELECT * FROM odontologos WHERE odontologo_id = %d", id)
 	row := s.db.QueryRow(query)
 	err := row.Scan(&odontologoEncontrado.OdontologoId, &odontologoEncontrado.ApellidoOdontologo, &odontologoEncontrado.NombreOdontologo, &odontologoEncontrado.Matricula)
 	if err != nil {
@@ -120,13 +120,13 @@ func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) 
 	}
 	query := "UPDATE odontologos SET"
 	if odontologoInput.OdontologoId > 0 {
-		query += " id = '" + fmt.Sprint(odontologoInput.OdontologoId) + "',"
+		query += " odontologo_id = '" + fmt.Sprint(odontologoInput.OdontologoId) + "',"
 	}
 	if odontologoInput.NombreOdontologo != "" {
-		query += " nombre = '" + odontologoInput.NombreOdontologo + "',"
+		query += " apellido_odontologo = '" + odontologoInput.NombreOdontologo + "',"
 	}
 	if odontologoInput.ApellidoOdontologo != "" {
-		query += " apellido = '" + odontologoInput.ApellidoOdontologo + "',"
+		query += " nombre_dontologo = '" + odontologoInput.ApellidoOdontologo + "',"
 	}
 	if odontologoInput.Matricula != "" {
 		query += " matricula = '" + odontologoInput.Matricula + "',"
@@ -208,7 +208,7 @@ func (s *OdontologoSqlStore) Exists(matricula string) bool {
 
 func (s *PacienteSqlStore) Read(id int) (domains.Paciente, error) {
 	// Consulta para recuperar el paciente con el ID proporcionado
-	query := "SELECT nombre, apellido, domicilio, dni, fecha_de_alta FROM pacientes WHERE paciente_id = ?"
+	query := "SELECT nombre_paciente, pellido_opaciente, domicilio, dni, fecha_de_alta FROM pacientes WHERE paciente_id = ?"
 
 	// Ejecutar la consulta y recuperar los datos
 	var p domains.Paciente
@@ -316,7 +316,7 @@ func (s *PacienteSqlStore) Exists(dni string) bool {
 
 func (s *TurnoSqlStore) ReadById(id int) (domains.Turno, error) {
 	// Consulta para recuperar el turno con el ID proporcionado
-	query := "SELECT * FROM turnos WHERE idturno = ?"
+	query := "SELECT * FROM turnos WHERE turno_id = ?"
 
 	// Ejecutar la consulta y recuperar los datos
 	var t domains.Turno
@@ -338,7 +338,7 @@ func (s *TurnoSqlStore) ReadById(id int) (domains.Turno, error) {
 func (s *TurnoSqlStore) GetByDNI(dni string) (domains.Turno, error) {
 	// Consulta para recuperar el Id del vpaciente con el DNI proporcionado
 	var vpaciente domains.Paciente
-	query := "SELECT idpaciente FROM pacientes WHERE dni = ?"
+	query := "SELECT paciente_id FROM pacientes WHERE dni = ?"
 	row := s.db.QueryRow(query, dni)
 	err := row.Scan(&vpaciente.PacienteID)
 	if err != nil {
@@ -396,7 +396,7 @@ func (s *TurnoSqlStore) Update(p domains.Turno) error {
 }
 
 func (s *TurnoSqlStore) Delete(id int) error {
-	query := "DELETE FROM turnos WHERE id = ?;"
+	query := "DELETE FROM turnos WHERE turno_id = ?;"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
 		return err
