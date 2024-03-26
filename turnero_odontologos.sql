@@ -72,13 +72,13 @@ LOCK TABLES `pacientes` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `turno`
+-- Table structure for table `turnos`
 --
 
-DROP TABLE IF EXISTS `turno`;
+DROP TABLE IF EXISTS `turnos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `turno` (
+CREATE TABLE `turnos` (
   `turno_id` int NOT NULL AUTO_INCREMENT,
   `fecha_y_hora` varchar(45) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
@@ -89,10 +89,10 @@ CREATE TABLE `turno` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `turno`
+-- Dumping data for table `turnos`
 --
 
-LOCK TABLES `turno` WRITE;
+LOCK TABLES `turnos` WRITE;
 /*!40000 ALTER TABLE `turno` DISABLE KEYS */;
 /*!40000 ALTER TABLE `turno` ENABLE KEYS */;
 UNLOCK TABLES;
