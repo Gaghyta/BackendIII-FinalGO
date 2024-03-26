@@ -92,7 +92,7 @@ func main() {
 	storageTurno := turnoStore.NewTurnoSqlStore(bd)
 	repoTurno := turnos.NewRepository(storageTurno)
 	serviceTurnos := turnos.NewService(repoTurno)
-	turnosHandler := handler.NewTurnoHandler(serviceTurnos)
+	turnosHandler := handler.NewTurnoHandler(serviceTurnos,servicePacientes,serviceOdontologos)
 
 	turnos := r.Group("/turnos")
 
@@ -100,7 +100,7 @@ func main() {
 		//turnos.GET(":turno_id", turnosHandler.GetByID())
 		turnos.GET(":dni", turnosHandler.GetByDNI())
 		turnos.POST("", turnosHandler.Post())
-		//turnos.POST("/dni-matricula", turnosHandler.PostWithDniAndMatricula())
+		turnos.POST("/dni-matricula", turnosHandler.PostWithDniAndMatricula())
 		turnos.DELETE(":turno_id", turnosHandler.DeleteByID())
 		turnos.PATCH(":turno_id", turnosHandler.Patch())
 		turnos.PUT(":turno_id", turnosHandler.Put())

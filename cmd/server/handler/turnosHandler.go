@@ -5,6 +5,9 @@ import (
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
+	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
+	paciente "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
+
 	//"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
 
@@ -15,14 +18,17 @@ import (
 
 type turnoHandler struct {
 	ts turnos.Service
+	ps paciente.Service
+	os odontologos.Service
 }
 
-func NewTurnoHandler(t turnos.Service) *turnoHandler {
+func NewTurnoHandler(t turnos.Service, p paciente.Service, o odontologos.Service) *turnoHandler {
 	return &turnoHandler{
 		ts: t,
+		ps: p,
+		os: o,
 	}
 }
-
 // GetById obtiene un turno por id
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -92,6 +98,7 @@ func (h *turnoHandler) Post() gin.HandlerFunc {
 
 func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//genero la estructura que espero recibir en el POST
 		type Turno_dni_mat struct {
 			TurnosId          int    `json:"turnos_id"`
 			FechaYHora        string `json:"fecha_y_hora"`
@@ -99,26 +106,53 @@ func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 			MatriculaDentista string `json:"matricula_dentista"`
 			DNIPaciente       string `json:"dni_paciente"`
 		}
+		// Creo variable asociada a la estructura
 		var turno_dni_mat Turno_dni_mat
 
+		// Cargo la estructura con los datos del POST
 		err := c.ShouldBindJSON(&turno_dni_mat)
 		if err != nil {
 			web.Failure(c, 400, errors.New("JSON inválido"))
 			return
 		}
 
+		// Me conecto con Service de pacientes, y recupero el idPaciente
+		paciente, err := h.ps.GetByDNI(turno_dni_mat.DNIPaciente)
+		if err != nil {
+			web.Failure(c, 400, errors.New("No existe ningún paciente con ese DNI"))
+			return
+		}
+
+		// Me conecto con Service de odontologos, y recupero el idOdontologo
+		odontologo, err := h.os.GetByMatricula(turno_dni_mat.MatriculaDentista)
+		if err != nil {
+			web.Failure(c, 400, errors.New("No existe ningún odontólogo con esa matrícula"))
+			return
+		}
+
+		// Creo variable con estructura Turno
 		var turno domains.Turno
 
+		// Cargo esta variable con los datos recién obtenidos
+		turno.FechaYHora = turno_dni_mat.FechaYHora
+		turno.Descripcion = turno_dni_mat.Descripcion
+		turno.DentistaIDDentista = odontologo.OdontologoId
+		turno.PacienteIDPaciente = paciente.PacienteID
+
+		// Valido todos los datos
 		valido, err := validateEmptyTurno(&turno)
 		if !valido {
 			web.Failure(c, 400, err)
 			return
 		}
+
+		// Creo el turno
 		t, err := h.ts.Create(turno)
 		if err != nil {
 			web.Failure(c, 400, err)
 			return
 		}
+
 		web.Success(c, 201, t)
 	}
 }
@@ -156,6 +190,7 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 		web.Success(c, 201, odontologoActualizado)
 	}
 }
+
 
 func (h *turnoHandler) DeleteByID() gin.HandlerFunc {
 	return func(c *gin.Context) {

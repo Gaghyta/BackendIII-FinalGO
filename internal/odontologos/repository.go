@@ -10,6 +10,7 @@ import (
 
 type Repository interface {
 	GetByID(id int) (domains.Odontologo, error)
+	GetByMatricula(matricula string) (domains.Odontologo, error)
 	Create(p domains.Odontologo) (domains.Odontologo, error)
 	Update(id int, uO domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
@@ -32,7 +33,14 @@ func (r *repository) GetByID(id int) (domains.Odontologo, error) {
 		return domains.Odontologo{}, err
 	}
 	return odontologo, nil
+}
 
+func (r *repository) GetByMatricula(matricula string) (domains.Odontologo, error) {
+	odontologo, err := r.storage.GetByMatricula(matricula)
+	if err != nil {
+		return domains.Odontologo{}, err
+	}
+	return odontologo, nil
 }
 
 func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {

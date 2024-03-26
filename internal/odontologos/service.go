@@ -8,6 +8,7 @@ import (
 
 type Service interface {
 	GetByID(id int) (domains.Odontologo, error)
+	GetByMatricula(matricula string) (domains.Odontologo, error)
 	Create(o domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
 	Update(id int, uO domains.Odontologo) (domains.Odontologo, error)
@@ -24,6 +25,14 @@ func NewService(r Repository) Service {
 
 func (s *service) GetByID(id int) (domains.Odontologo, error) {
 	o, err := s.r.GetByID(id)
+	if err != nil {
+		return domains.Odontologo{}, err
+	}
+	return o, nil
+}
+
+func (s *service) GetByMatricula(matricula string) (domains.Odontologo, error){
+	o, err := s.r.GetByMatricula(matricula)
 	if err != nil {
 		return domains.Odontologo{}, err
 	}

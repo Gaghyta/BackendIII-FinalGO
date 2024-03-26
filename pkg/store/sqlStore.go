@@ -77,6 +77,19 @@ func (s *OdontologoSqlStore) GetByID(id int) (domains.Odontologo, error) {
 	return odontologoEncontrado, nil
 }
 
+func (s *OdontologoSqlStore) GetByMatricula(matricula string) (domains.Odontologo, error) {
+	var odontologoEncontrado domains.Odontologo
+
+	query := fmt.Sprintf("SELECT * FROM odontologos WHERE matricula = %s", matricula)
+	row := s.db.QueryRow(query)
+	err := row.Scan(&odontologoEncontrado.OdontologoId, &odontologoEncontrado.ApellidoOdontologo, &odontologoEncontrado.NombreOdontologo, &odontologoEncontrado.Matricula)
+	if err != nil {
+		return domains.Odontologo{}, err
+	}
+	return odontologoEncontrado, nil
+}
+
+
 func (s *OdontologoSqlStore) Create(o domains.Odontologo) error {
 	query := "INSERT INTO odontologos (apellido_odontologo, nombre_odontologo, matricula) VALUES (?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
@@ -230,11 +243,11 @@ func (s *PacienteSqlStore) Read(id int) (domains.Paciente, error) {
 
 func (s *PacienteSqlStore) GetByDNI(dni string) (domains.Paciente, error) {
 	// Consulta para recuperar el paciente con el ID proporcionado
-	query := "SELECT idpaciente FROM pacientes WHERE dni = ?"
+	query := "SELECT * FROM pacientes WHERE dni = ?"
 
 	// Ejecutar la consulta y recuperar los datos
 	var p domains.Paciente
-	err := s.db.QueryRow(query, dni).Scan(&p.PacienteID)
+	err := s.db.QueryRow(query, dni).Scan(&p.PacienteID, &p.NombrePaciente, &p.ApellidoPaciente, &p.DomicilioPaciente, &p.Dni, &p.FechaDeAlta)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// El paciente con el ID proporcionado no fue encontrado
