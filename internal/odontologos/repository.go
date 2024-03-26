@@ -44,25 +44,27 @@ func (r *repository) GetByMatricula(matricula string) (domains.Odontologo, error
 }
 
 func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {
-	if !r.storage.Exists(o.Matricula) {
+	if r.storage.Exists(o.Matricula) {
 		return domains.Odontologo{}, errors.New("la matrícula de este odontologo ya existe en nuestra base de datos")
 	}
 	err := r.storage.Create(o)
 	if err != nil {
 		return domains.Odontologo{}, errors.New("error guardando odontólogo")
 	}
+
+
 	return o, nil
 }
 
 func (r *repository) Update(id int, uO domains.Odontologo) (domains.Odontologo, error) {
-	if !r.storage.Exists(uO.Matricula) {
+	if r.storage.Exists(uO.Matricula) {
 		return domains.Odontologo{}, errors.New("la matrícula ingresada existe")
 	}
-	err := r.storage.Create(uO)
+	modificado, err := r.storage.Update(id, uO)
 	if err != nil {
 		return domains.Odontologo{}, errors.New("error modificando el odontólogo")
 	}
-	return uO, nil
+	return modificado, nil
 }
 
 func (r *repository) Delete(id int) error {

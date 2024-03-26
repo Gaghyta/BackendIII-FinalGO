@@ -60,6 +60,7 @@ func (s *OdontologoSqlStore) Read(id int) (domains.Odontologo, error) {
 		// Ocurrió un error al ejecutar la consulta
 		return domains.Odontologo{}, err
 	}
+	o.OdontologoId = id
 
 	// Retornar los datos del odontólogo recuperado
 	return o, nil
@@ -82,10 +83,12 @@ func (s *OdontologoSqlStore) GetByMatricula(matricula string) (domains.Odontolog
 
 	query := fmt.Sprintf("SELECT * FROM odontologos WHERE matricula = %s", matricula)
 	row := s.db.QueryRow(query)
+	fmt.Println(row)
 	err := row.Scan(&odontologoEncontrado.OdontologoId, &odontologoEncontrado.ApellidoOdontologo, &odontologoEncontrado.NombreOdontologo, &odontologoEncontrado.Matricula)
 	if err != nil {
 		return domains.Odontologo{}, err
 	}
+	fmt.Println(odontologoEncontrado)
 	return odontologoEncontrado, nil
 }
 
@@ -122,7 +125,7 @@ func (s *OdontologoSqlStore) Create(o domains.Odontologo) error {
 
 func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) (domains.Odontologo, error) {
 
-	_, err := s.db.Query("SELECT * FROM odontologos WHERE odontologos_id = ?", id)
+	_, err := s.db.Query("SELECT * FROM odontologos WHERE odontologo_id = ?", id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			fmt.Println("El Odontologo no existe en la base de datos:", err)
@@ -144,6 +147,7 @@ func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) 
 	if odontologoInput.Matricula != "" {
 		query += " matricula = '" + odontologoInput.Matricula + "',"
 	}
+	
 
 	query = query[0 : len(query)-1]
 	query += " WHERE odontologo_id = ?"

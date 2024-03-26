@@ -2,6 +2,8 @@ package handler
 
 import (
 	"errors"
+	"fmt"
+
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
@@ -25,6 +27,7 @@ func NewOdontologoHandler(s odontologos.Service) *odontologoHandler {
 // Get obtiene un odontólogo por id
 func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		fmt.Println(1)
 		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
@@ -32,6 +35,7 @@ func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 			return
 		}
 		odontologo, err := h.s.GetByID(id)
+		fmt.Println(2)
 		if err != nil {
 			web.Failure(c, 404, errors.New("el odontólogo que estás buscando no ha sido encontrado"))
 			return
@@ -58,6 +62,7 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("invalid json"))
 			return
 		}
+
 		valid, err := validateEmptyOdontologo(&odontologo)
 		if !valid {
 			web.Failure(c, 400, err)

@@ -2,14 +2,8 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
-
-	"fmt"
 	"log"
-	"os"
-
 	"github.com/gin-gonic/gin"
-
 	"github.com/Gaghyta/BackendIIIFinalGO/cmd/server/handler"
 	odontologoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	pacienteStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
@@ -18,7 +12,7 @@ import (
 	odontologos "github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	pacientes "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
-	//"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Config struct {
@@ -31,25 +25,7 @@ type Config struct {
 
 func main() {
 
-	configFile, err := os.Open("/Users/gaghy/Desktop/BackendIIIFinalGO/config/config.json")
-	if err != nil {
-		log.Fatal("Error abriendo el archivo de configuración:", err)
-	}
-	defer configFile.Close()
-
-	// Decodificar el archivo de configuración en una estructura Config
-	var config Config
-	err = json.NewDecoder(configFile).Decode(&config)
-	if err != nil {
-		log.Fatal("Error decodificando el archivo de configuración:", err)
-	}
-
-	// // Construir la cadena de conexión
-	dbConnectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
-
-	// // Abrir la conexión a la base de datos
-	bd, err := sql.Open("mysql", dbConnectionString)
-
+	bd, err := sql.Open("mysql", "root:digital@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
@@ -67,11 +43,11 @@ func main() {
 	odontologos := r.Group("/odontologos")
 
 	{
-		odontologos.GET(":odontologo_id", odontologoHandler.GetByID())
+		odontologos.GET("/:odontologo_id", odontologoHandler.GetByID())
 		odontologos.POST("", odontologoHandler.Post())
-		odontologos.DELETE(":odontologo_id", odontologoHandler.DeleteByID())
-		odontologos.PATCH(":odontologo_id", odontologoHandler.Patch())
-		odontologos.PUT(":odontologo_id", odontologoHandler.Put())
+		odontologos.DELETE("/:odontologo_id", odontologoHandler.DeleteByID())
+		odontologos.PATCH("/:odontologo_id", odontologoHandler.Patch())
+		odontologos.PUT("/:odontologo_id", odontologoHandler.Put())
 	}
 
 	storagePaciente := pacienteStore.NewPacienteSqlStore(bd)

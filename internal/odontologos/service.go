@@ -46,6 +46,7 @@ func (s *service) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	}
 	return o, nil
 }
+
 func (s *service) Update(id int, uO domains.Odontologo) (domains.Odontologo, error) {
 	o, err := s.r.GetByID(id)
 
