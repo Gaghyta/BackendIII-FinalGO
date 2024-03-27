@@ -3,7 +3,8 @@ package handler
 import (
 	"errors"
 	"fmt"
-
+	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
@@ -56,6 +57,16 @@ func validateEmptyOdontologo(odontologo *domains.Odontologo) (bool, error) {
 // Post crea un nuevo odontólogo
 func (h *odontologoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		var odontologo domains.Odontologo
 		err := c.ShouldBindJSON(&odontologo)
 		if err != nil {
