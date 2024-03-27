@@ -153,7 +153,7 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 			Dni:               r.Dni,
 			FechaDeAlta:       r.FechaDeAlta,
 		}
-		p, err := h.ps.Patch(id, update)
+		p, err := h.ps.Update(id, update)
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": err.Error()})
 			return
