@@ -14,8 +14,6 @@ type Repository interface {
 	Create(p domains.Odontologo) (domains.Odontologo, error)
 	Update(id int, uO domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
-	//Patch(matricula string, nuevaMatricula string) (domains.Odontologo, error)
-	//GetByMatricula(matricula string) (string, error)
 }
 
 type repository struct {
@@ -51,7 +49,6 @@ func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	if err != nil {
 		return domains.Odontologo{}, errors.New("error guardando odontólogo")
 	}
-
 
 	return o, nil
 }
