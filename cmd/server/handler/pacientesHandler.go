@@ -191,7 +191,7 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 		update := domains.Paciente{
 			NombrePaciente:    r.NombrePaciente,
 			ApellidoPaciente:  r.ApellidoPaciente,
-			DomicilioPaciente: r.ApellidoPaciente,
+			DomicilioPaciente: r.DomicilioPaciente,
 			Dni:               r.Dni,
 			FechaDeAlta:       r.FechaDeAlta,
 		}
