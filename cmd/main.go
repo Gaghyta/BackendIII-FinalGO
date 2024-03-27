@@ -85,7 +85,7 @@ func main() {
 
 	{
 		turnos.GET(":turno_id", turnosHandler.GetByID())
-		turnos.GET(":dni", turnosHandler.GetByDNI())
+		turnos.GET("", turnosHandler.GetByDNI())
 		turnos.POST("", middleware.Authenticate(), turnosHandler.Post())
 		turnos.POST("/dni-matricula", middleware.Authenticate(), turnosHandler.PostWithDniAndMatricula())
 		turnos.DELETE(":turno_id", middleware.Authenticate(), turnosHandler.DeleteByID())
