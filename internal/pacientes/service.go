@@ -47,6 +47,7 @@ func (s *service) Create(o domains.Paciente) (domains.Paciente, error) {
 }
 func (s *service) Update(id int, uP domains.Paciente) (domains.Paciente, error) {
 	o, err := s.r.GetByID(id)
+
 	if err != nil {
 		return domains.Paciente{}, err
 	}
@@ -56,9 +57,16 @@ func (s *service) Update(id int, uP domains.Paciente) (domains.Paciente, error) 
 	if uP.ApellidoPaciente != "" {
 		o.ApellidoPaciente = uP.ApellidoPaciente
 	}
+	if uP.DomicilioPaciente != "" {
+		o.DomicilioPaciente = uP.DomicilioPaciente
+	}
 	if uP.Dni != "" {
 		o.Dni = uP.Dni
 	}
+	if uP.FechaDeAlta != "" {
+		o.FechaDeAlta = uP.FechaDeAlta
+	}
+
 	o, err = s.r.Update(id, o)
 	if err != nil {
 		return domains.Paciente{}, err
