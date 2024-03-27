@@ -7,11 +7,7 @@ import (
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	paciente "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
-
-	//"github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
-
-	//Store "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
 )
@@ -29,18 +25,19 @@ func NewTurnoHandler(t turnos.Service, p paciente.Service, o odontologos.Service
 		os: o,
 	}
 }
+
 // GetById obtiene un turno por id
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("turnos_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
-			web.Failure(c, 400, errors.New("Este id es inválido"))
+			web.Failure(c, 400, errors.New("este id es inválido"))
 			return
 		}
 		turno, err := h.ts.GetByID(id)
 		if err != nil {
-			web.Failure(c, 404, errors.New("El turno que estás buscando no ha sido encontrado"))
+			web.Failure(c, 404, errors.New("el turno que estás buscando no ha sido encontrado"))
 		}
 		web.Success(c, 200, turno)
 	}
@@ -51,12 +48,12 @@ func (h *turnoHandler) GetByDNI() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		dniParam := c.Query("dni")
 		if dniParam == "" {
-			web.Failure(c, 400, errors.New("Este dni es inválido"))
+			web.Failure(c, 400, errors.New("este dni es inválido"))
 			return
 		}
 		turno, err := h.ts.GetByDNI(dniParam)
 		if err != nil {
-			web.Failure(c, 404, errors.New("El turno que estás buscando no ha sido encontrado"))
+			web.Failure(c, 404, errors.New("el turno que estás buscando no ha sido encontrado"))
 		}
 		web.Success(c, 200, turno)
 	}
@@ -69,7 +66,7 @@ func validateEmptyTurno(turno *domains.Turno) (bool, error) {
 		//turno.DentistaIDDentista == "" ||
 		//turno.PacienteIDPaciente == "" {
 
-		return false, errors.New("Los campos no pueden estar vacíos")
+		return false, errors.New("los campos no pueden estar vacíos")
 	}
 	return true, nil
 }
@@ -119,14 +116,14 @@ func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 		// Me conecto con Service de pacientes, y recupero el idPaciente
 		paciente, err := h.ps.GetByDNI(turno_dni_mat.DNIPaciente)
 		if err != nil {
-			web.Failure(c, 400, errors.New("No existe ningún paciente con ese DNI"))
+			web.Failure(c, 400, errors.New("no existe ningún paciente con ese DNI"))
 			return
 		}
 
 		// Me conecto con Service de odontologos, y recupero el idOdontologo
 		odontologo, err := h.os.GetByMatricula(turno_dni_mat.MatriculaDentista)
 		if err != nil {
-			web.Failure(c, 400, errors.New("No existe ningún odontólogo con esa matrícula"))
+			web.Failure(c, 400, errors.New("no existe ningún odontólogo con esa matrícula"))
 			return
 		}
 
@@ -164,7 +161,7 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 		idParam := c.Param("turnos_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
-			web.Failure(c, 400, errors.New("Id inválido"))
+			web.Failure(c, 400, errors.New("id inválido"))
 			return
 		}
 		// Obtener los datos actualizados del turno del cuerpo de la solicitud
@@ -191,7 +188,6 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 	}
 }
 
-
 func (h *turnoHandler) DeleteByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Obtener el Id del turno de la URL
@@ -209,7 +205,7 @@ func (h *turnoHandler) DeleteByID() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(c, 201, "Turno eliminado exitosamente")
+		web.Success(c, 201, "turno eliminado exitosamente")
 	}
 }
 

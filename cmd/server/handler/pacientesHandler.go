@@ -8,13 +8,7 @@ import (
 	paciente "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
-	/* "fmt"
-	"net/http"
-	"strconv"
-
-	"github.com/gin-gonic/gin"
-
-	"github.com/Gaghyta/desafio-Especializacion-Backend-Go/cmd/internal/pacientes" */)
+)
 
 type pacienteHandler struct {
 	ps paciente.Service
@@ -32,12 +26,12 @@ func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
-			web.Failure(ctx, 400, errors.New("Este Id es inválido"))
+			web.Failure(ctx, 400, errors.New("este Id es inválido"))
 			return
 		}
 		paciente, err := h.ps.GetByID(id)
 		if err != nil {
-			web.Failure(ctx, 404, errors.New("El paciente que estás buscando no ha sido encontrado"))
+			web.Failure(ctx, 404, errors.New("el paciente que estás buscando no ha sido encontrado"))
 		}
 		web.Success(ctx, 200, paciente)
 	}
@@ -49,7 +43,7 @@ func validateEmptyPaciente(paciente *domains.Paciente) (bool, error) {
 		paciente.ApellidoPaciente == "" ||
 		paciente.Dni == "" ||
 		paciente.FechaDeAlta == "" {
-		return false, errors.New("Los campos no pueden estar vacíos")
+		return false, errors.New("los campos no pueden estar vacíos")
 	}
 	return true, nil
 }
@@ -83,7 +77,7 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
-			web.Failure(ctx, 400, errors.New("Id inválido"))
+			web.Failure(ctx, 400, errors.New("id inválido"))
 			return
 		}
 		// Obtener los datos actualizados del paciente del cuerpo de la solicitud
