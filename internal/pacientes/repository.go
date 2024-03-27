@@ -2,7 +2,7 @@ package paciente
 
 import (
 	"errors"
-	// "fmt"
+
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 	Store "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"

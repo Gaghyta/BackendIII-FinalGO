@@ -134,6 +134,11 @@ CREATE TABLE `turnos` (
 
 LOCK TABLES `turnos` WRITE;
 /*!40000 ALTER TABLE `turno` DISABLE KEYS */;
+INSERT INTO `turnos`(`fecha_y_hora`,`descripcion`, `dentista_id_dentista`,`paciente_id_paciente`) VALUES 
+('21/05/2022 11:22', 'control', 3, 4),
+('17/03/2024 15:10', 'ortodoncia', 6, 8),
+('15/12/2023 08:30', 'control de ortodoncia', 1, 4),
+('07/07/2023 16:30', 'consulta', 2, 8);
 /*!40000 ALTER TABLE `turno` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

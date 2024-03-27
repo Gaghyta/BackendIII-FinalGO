@@ -2,20 +2,14 @@ package handler
 
 import (
 	"errors"
-	"fmt"
+
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 	paciente "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/web"
 	"github.com/gin-gonic/gin"
-	/* "fmt"
-	"net/http"
-	"strconv"
-
-	"github.com/gin-gonic/gin"
-
-	"github.com/Gaghyta/desafio-Especializacion-Backend-Go/cmd/internal/pacientes" */)
+)
 
 type pacienteHandler struct {
 	ps paciente.Service
@@ -136,13 +130,13 @@ func (h *pacienteHandler) DeleteByID() gin.HandlerFunc {
 // Patch actualiza uno o varios campos
 func (h *pacienteHandler) Patch() gin.HandlerFunc {
 	type Request struct {
-		NombrePaciente    string `json:"nombre_paciente,omitempty"`
-		ApellidoPaciente  string `json:"apellido_paciente,omitempty"`
-		Domicilio string `json:"domicilio,omitempty"`
-		Dni               string `json:"dni,omitempty"`
-		FechaDeAlta       string `json:"fecha_de_alta,omitempty"`
+		NombrePaciente   string `json:"nombre_paciente,omitempty"`
+		ApellidoPaciente string `json:"apellido_paciente,omitempty"`
+		Domicilio        string `json:"domicilio,omitempty"`
+		Dni              string `json:"dni,omitempty"`
+		FechaDeAlta      string `json:"fecha_de_alta,omitempty"`
 	}
-	
+
 	return func(ctx *gin.Context) {
 		var r Request
 		idParam := ctx.Param("paciente_id")
@@ -155,8 +149,6 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 			ctx.JSON(400, gin.H{"error": "invalid json"})
 			return
 		}
-
-		fmt.Println(r)
 
 		update := domains.Paciente{
 			NombrePaciente:    r.NombrePaciente,

@@ -73,13 +73,13 @@ func main() {
 	turnos := r.Group("/turnos")
 
 	{
-		//turnos.GET(":turno_id", turnosHandler.GetByID())
-		turnos.GET(":dni", turnosHandler.GetByDNI())
+		turnos.GET("/:turno_id", turnosHandler.GetByID())
+		turnos.GET("", turnosHandler.GetByDNI())
 		turnos.POST("", turnosHandler.Post())
 		turnos.POST("/dni-matricula", turnosHandler.PostWithDniAndMatricula())
-		turnos.DELETE(":turno_id", turnosHandler.DeleteByID())
-		turnos.PATCH(":turno_id", turnosHandler.Patch())
-		turnos.PUT(":turno_id", turnosHandler.Put())
+		turnos.DELETE("/:turno_id", turnosHandler.DeleteByID())
+		turnos.PATCH("/:turno_id", turnosHandler.Patch())
+		turnos.PUT("/:turno_id", turnosHandler.Put())
 	}
 
 	r.Run(":8080")

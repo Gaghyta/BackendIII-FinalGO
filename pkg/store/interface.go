@@ -38,9 +38,9 @@ type StoreTurnoInterface interface {
 	// GetByDNI devuelve un turno por su DNI
 	GetByDNI(dni string) (domains.Turno, error)
 	// Create agrega un nuevo turno
-	Create(turno domains.Turno) error
+	Create(turno domains.Turno)(domains.Turno, error)
 	// Update actualiza un turno
-	Update(turno domains.Turno) error
+	Update(id int, turno domains.Turno) (domains.Turno, error)
 	// Delete elimina un turno
 	Delete(id int) error
 	// Exists verifica si un turno existe
