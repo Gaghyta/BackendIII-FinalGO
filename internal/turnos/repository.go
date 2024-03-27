@@ -14,7 +14,7 @@ type Repository interface {
 	// GetByDNI busca un turno por su DNI
 	GetByDNI(dni string) (domains.Turno, error)
 	// Create hace un post
-	Create(o domains.Turno) (domains.Turno, error)
+	Create(t domains.Turno) (domains.Turno, error)
 	// Update actualiza un paciente
 	Update(id int, p domains.Turno) (domains.Turno, error)
 	// Delete elimina un paciente
@@ -52,11 +52,11 @@ func (r *repository) Create(t domains.Turno) (domains.Turno, error) {
 	if r.storage.Exists(t.FechaYHora, t.DentistaIDDentista) {
 		return domains.Turno{}, errors.New("el odontólogo tiene un turno asignado en ese horario en nuestra base de datos")
 	}
-	err := r.storage.Create(t)
+	newT, err := r.storage.Create(t)
 	if err != nil {
 		return domains.Turno{}, errors.New("error guardando turno")
 	}
-	return t, nil
+	return newT, nil
 }
 
 func (r *repository) Delete(id int) error {
@@ -69,11 +69,11 @@ func (r *repository) Delete(id int) error {
 
 func (r *repository) Update(id int, o domains.Turno) (domains.Turno, error) {
 	if !r.storage.Exists(o.FechaYHora, o.DentistaIDDentista) {
-		return domains.Turno{}, errors.New("el DNI ingresado ya existe")
+		return domains.Turno{}, errors.New("ya existe un turno con esa hora y odontologo")
 	}
-	err := r.storage.Update(o)
+	t, err := r.storage.Update(id, o)
 	if err != nil {
 		return domains.Turno{}, errors.New("error modificando el turno")
 	}
-	return o, nil
+	return t, nil
 }
