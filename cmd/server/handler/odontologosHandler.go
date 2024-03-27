@@ -14,13 +14,13 @@ import (
 )
 
 type odontologoHandler struct {
-	s odontologos.Service
+	os odontologos.Service
 }
 
 // NewProductHandler crea un nuevo controller de productos
 func NewOdontologoHandler(s odontologos.Service) *odontologoHandler {
 	return &odontologoHandler{
-		s: s,
+		os: s,
 	}
 }
 
@@ -34,7 +34,7 @@ func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("este id es inválido"))
 			return
 		}
-		odontologo, err := h.s.GetByID(id)
+		odontologo, err := h.os.GetByID(id)
 		fmt.Println(2)
 		if err != nil {
 			web.Failure(c, 404, errors.New("el odontólogo que estás buscando no ha sido encontrado"))
@@ -69,7 +69,7 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 			return
 		}
 
-		o, err := h.s.Create(odontologo)
+		o, err := h.os.Create(odontologo)
 		if err != nil {
 			web.Failure(c, 400, err)
 			return
@@ -106,7 +106,7 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 		}
 
 		// Llamar al servicio para realizar la actualización en la base de datos
-		odontologoActualizado, err := h.s.Update(id, odontologo)
+		odontologoActualizado, err := h.os.Update(id, odontologo)
 		if err != nil {
 			web.Failure(c, 400, err)
 			return
@@ -128,7 +128,7 @@ func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 		}
 
 		// Llamar al servicio para eliminar el odontólogo
-		err = h.s.Delete(id)
+		err = h.os.Delete(id)
 		if err != nil {
 			web.Failure(c, 500, err) // Cambiar el código de estado si es necesario
 			return
@@ -165,7 +165,7 @@ func (h *odontologoHandler) Patch() gin.HandlerFunc {
 			NombreOdontologo:   r.NombreOdontologo,
 			Matricula:          r.Matricula,
 		}
-		o, err := h.s.Update(id, update)
+		o, err := h.os.Update(id, update)
 		if err != nil {
 			c.JSON(400, gin.H{"error": err.Error()})
 			return
