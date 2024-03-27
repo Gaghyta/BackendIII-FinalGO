@@ -92,7 +92,15 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 // Put modifica un odontólogo
 func (h *odontologoHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
 		// Obtener el ID del odontólogo de la URL
 		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
@@ -130,6 +138,15 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 
 func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
 		// Obtener el ID del odontólogo de la URL
 		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
@@ -159,6 +176,16 @@ func (h *odontologoHandler) Patch() gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		var r Request
 		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)

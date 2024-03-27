@@ -2,6 +2,8 @@ package handler
 
 import (
 	"errors"
+	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
@@ -50,6 +52,16 @@ func validateEmptyPaciente(paciente *domains.Paciente) (bool, error) {
 
 func (h *pacienteHandler) Post() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("TOKEN")
+		if token == "" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		var paciente domains.Paciente
 		err := ctx.ShouldBindJSON(&paciente)
 		if err != nil {
@@ -73,6 +85,16 @@ func (h *pacienteHandler) Post() gin.HandlerFunc {
 // put modifica un paciente
 func (h *pacienteHandler) Put() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("TOKEN")
+		if token == "" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		// Obtener el Id del paciente de la URL
 		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
@@ -106,6 +128,16 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 
 func (h *pacienteHandler) DeleteByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("TOKEN")
+		if token == "" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		// Obtener el Id del paciente de la URL
 		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)
@@ -135,6 +167,16 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 		FechaDeAlta       string `json:"fecha_de_alta,omitempty"`
 	}
 	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("TOKEN")
+		if token == "" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		var r Request
 		idParam := ctx.Param("paciente_id")
 		id, err := strconv.Atoi(idParam)

@@ -2,6 +2,8 @@ package handler
 
 import (
 	"errors"
+	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
@@ -104,6 +106,16 @@ func validateEmptyTurno(turno *domains.Turno) (bool, error) {
 
 func (h *turnoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		var turno domains.Turno
 
 		err := c.ShouldBindJSON(&turno)
@@ -129,6 +141,17 @@ func (h *turnoHandler) Post() gin.HandlerFunc {
 
 func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		//genero la estructura que espero recibir en el POST
 		type Turno_dni_mat struct {
 			TurnosId          int    `json:"turnos_id"`
@@ -191,6 +214,16 @@ func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 // put modifica un turno
 func (h *turnoHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		// Obtener el Id del turno de la URL
 		idParam := c.Param("turnos_id")
 		id, err := strconv.Atoi(idParam)
@@ -224,6 +257,16 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 
 func (h *turnoHandler) DeleteByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		// Obtener el Id del turno de la URL
 		idParam := c.Param("turnos_id")
 		id, err := strconv.Atoi(idParam)
@@ -252,6 +295,16 @@ func (h *turnoHandler) Patch() gin.HandlerFunc {
 		PacienteIDPaciente int    `json:"paciente_id_paciente,omitempty"`
 	}
 	return func(c *gin.Context) {
+		token := c.GetHeader("TOKEN")
+		if token == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "token no encontrado"})
+			return
+		}
+		if token != os.Getenv("TOKEN") {
+			c.JSON(400, gin.H{"error": "token inválido"})
+			return
+		}
+
 		var r Request
 		idParam := c.Param("turnos_id")
 		id, err := strconv.Atoi(idParam)
