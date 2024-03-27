@@ -14,6 +14,8 @@ import (
 	pacientes "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/turnos"
 	_ "github.com/go-sql-driver/mysql"
+
+	"github.com/Gaghyta/BackendIIIFinalGO/pkg/middleware"
 )
 
 type Config struct {
@@ -45,10 +47,10 @@ func main() {
 
 	{
 		odontologos.GET("/:odontologo_id", odontologoHandler.GetByID())
-		odontologos.POST("", odontologoHandler.Post())
-		odontologos.DELETE("/:odontologo_id", odontologoHandler.DeleteByID())
-		odontologos.PATCH("/:odontologo_id", odontologoHandler.Patch())
-		odontologos.PUT("/:odontologo_id", odontologoHandler.Put())
+		odontologos.POST("", middleware.Authenticate(), odontologoHandler.Post())
+		odontologos.DELETE("/:odontologo_id", middleware.Authenticate(), odontologoHandler.DeleteByID())
+		odontologos.PATCH("/:odontologo_id", middleware.Authenticate(), odontologoHandler.Patch())
+		odontologos.PUT("/:odontologo_id", middleware.Authenticate(), odontologoHandler.Put())
 	}
 
 	storagePaciente := pacienteStore.NewPacienteSqlStore(bd)
@@ -60,10 +62,10 @@ func main() {
 
 	{
 		pacientes.GET(":paciente_id", pacienteHandler.GetByID())
-		pacientes.POST("", pacienteHandler.Post())
-		pacientes.DELETE(":paciente_id", pacienteHandler.DeleteByID())
-		pacientes.PATCH(":paciente_id", pacienteHandler.Patch())
-		pacientes.PUT(":paciente_id", pacienteHandler.Put())
+		pacientes.POST("", middleware.Authenticate(), pacienteHandler.Post())
+		pacientes.DELETE(":paciente_id", middleware.Authenticate(), pacienteHandler.DeleteByID())
+		pacientes.PATCH(":paciente_id", middleware.Authenticate(), pacienteHandler.Patch())
+		pacientes.PUT(":paciente_id", middleware.Authenticate(), pacienteHandler.Put())
 	}
 
 	storageTurno := turnoStore.NewTurnoSqlStore(bd)
@@ -76,11 +78,11 @@ func main() {
 	{
 		//turnos.GET(":turno_id", turnosHandler.GetByID())
 		turnos.GET(":dni", turnosHandler.GetByDNI())
-		turnos.POST("", turnosHandler.Post())
-		turnos.POST("/dni-matricula", turnosHandler.PostWithDniAndMatricula())
-		turnos.DELETE(":turno_id", turnosHandler.DeleteByID())
-		turnos.PATCH(":turno_id", turnosHandler.Patch())
-		turnos.PUT(":turno_id", turnosHandler.Put())
+		turnos.POST("", middleware.Authenticate(), turnosHandler.Post())
+		turnos.POST("/dni-matricula", middleware.Authenticate(), turnosHandler.PostWithDniAndMatricula())
+		turnos.DELETE(":turno_id", middleware.Authenticate(), turnosHandler.DeleteByID())
+		turnos.PATCH(":turno_id", middleware.Authenticate(), turnosHandler.Patch())
+		turnos.PUT(":turno_id", middleware.Authenticate(), turnosHandler.Put())
 	}
 
 	r.Run(":8080")
