@@ -40,7 +40,7 @@ CREATE TABLE `odontologos` (
 
 LOCK TABLES `odontologos` WRITE;
 /*!40000 ALTER TABLE `odontologos` DISABLE KEYS */;
-INSERT INTO `odontologos` (`apellido_odontologo`, `nombre_odontoogo`, `matricula`) VALUES
+INSERT INTO `odontologos` (`apellido_odontologo`, `nombre_odontologo`, `matricula`) VALUES
   ('Pérez', 'Juan', '123456'),
   ('González', 'María', '654321'),
   ('Fernández', 'Pedro', '987654'),

@@ -3,11 +3,12 @@ package main
 import (
 	"database/sql"
 	"log"
-	"github.com/gin-gonic/gin"
+
 	"github.com/Gaghyta/BackendIIIFinalGO/cmd/server/handler"
 	odontologoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	pacienteStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	turnoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
+	"github.com/gin-gonic/gin"
 
 	odontologos "github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	pacientes "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
@@ -25,7 +26,7 @@ type Config struct {
 
 func main() {
 
-	bd, err := sql.Open("mysql", "root:digital@tcp(localhost:3306)/turnos-odontologia")
+	bd, err := sql.Open("mysql", "root:yokit@11@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
@@ -68,7 +69,7 @@ func main() {
 	storageTurno := turnoStore.NewTurnoSqlStore(bd)
 	repoTurno := turnos.NewRepository(storageTurno)
 	serviceTurnos := turnos.NewService(repoTurno)
-	turnosHandler := handler.NewTurnoHandler(serviceTurnos,servicePacientes,serviceOdontologos)
+	turnosHandler := handler.NewTurnoHandler(serviceTurnos, servicePacientes, serviceOdontologos)
 
 	turnos := r.Group("/turnos")
 
