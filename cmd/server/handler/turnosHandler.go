@@ -30,7 +30,9 @@ func NewTurnoHandler(t turnos.Service, p paciente.Service, o odontologos.Service
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("turnos_id")
+
 		id, err := strconv.Atoi(idParam)
+
 		if err != nil {
 			web.Failure(c, 400, errors.New("este id es inválido"))
 			return
@@ -55,35 +57,67 @@ func (h *turnoHandler) GetByDNI() gin.HandlerFunc {
 		if err != nil {
 			web.Failure(c, 404, errors.New("el turno que estás buscando no ha sido encontrado"))
 		}
-		web.Success(c, 200, turno)
+		type turnoCompleto struct {
+			TurnosId           int
+			FechaYHora         string
+			Descripcion        string
+			NombrePaciente     string
+			ApellidoPaciente   string
+			DomicilioPaciente  string
+			Dni                string
+			FechaDeAlta        string
+			ApellidoOdontologo string
+			NombreOdontologo   string
+			Matricula          string
+		}
+
+		var tC turnoCompleto
+
+		paciente, _ := h.ps.GetByID(turno.PacienteIDPaciente)
+		odontologo, _ := h.os.GetByID(turno.DentistaIDDentista)
+
+		tC.TurnosId = turno.TurnosId
+		tC.FechaYHora = turno.FechaYHora
+		tC.Descripcion = turno.Descripcion
+		tC.NombrePaciente = paciente.NombrePaciente
+		tC.ApellidoPaciente = paciente.ApellidoPaciente
+		tC.Dni = paciente.Dni
+		tC.FechaDeAlta = paciente.FechaDeAlta
+		tC.ApellidoOdontologo = odontologo.ApellidoOdontologo
+		tC.NombreOdontologo = odontologo.NombreOdontologo
+		tC.Matricula = odontologo.Matricula
+
+		web.Success(c, 200, tC)
 	}
 }
 
 // validateEmptys valida que los campos no estén vacíos
 func validateEmptyTurno(turno *domains.Turno) (bool, error) {
-	if turno.FechaYHora == "" || turno.Descripcion == "" {
-		//CONVERTIR  ||
-		//turno.DentistaIDDentista == "" ||
-		//turno.PacienteIDPaciente == "" {
-
+	if turno.FechaYHora == "" || turno.Descripcion == "" ||
+		turno.DentistaIDDentista == 0 ||
+		turno.PacienteIDPaciente == 0 {
 		return false, errors.New("los campos no pueden estar vacíos")
 	}
+
 	return true, nil
 }
 
 func (h *turnoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var turno domains.Turno
+
 		err := c.ShouldBindJSON(&turno)
 		if err != nil {
 			web.Failure(c, 400, errors.New("JSON inválido"))
 			return
 		}
+
 		valido, err := validateEmptyTurno(&turno)
 		if !valido {
 			web.Failure(c, 400, err)
 			return
 		}
+
 		t, err := h.ts.Create(turno)
 		if err != nil {
 			web.Failure(c, 400, err)
@@ -214,8 +248,8 @@ func (h *turnoHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		FechaYHora         string `json:"fecha_y_hora,omitempty"`
 		Descripcion        string `json:"descripcion,omitempty"`
-		DentistaIDDentista string `json:"dentista_id_dentista,omitempty"`
-		PacienteIDPaciente string `json:"paciente_id_paciente,omitempty"`
+		DentistaIDDentista int    `json:"dentista_id_dentista,omitempty"`
+		PacienteIDPaciente int    `json:"paciente_id_paciente,omitempty"`
 	}
 	return func(c *gin.Context) {
 		var r Request
@@ -230,11 +264,10 @@ func (h *turnoHandler) Patch() gin.HandlerFunc {
 			return
 		}
 		update := domains.Turno{
-			FechaYHora:  r.FechaYHora,
-			Descripcion: r.Descripcion,
-			//CONVERTIR VER
-			//DentistaIDDentista: r.DentistaIDDentista,
-			//PacienteIDPaciente: r.PacienteIDPaciente,
+			FechaYHora:         r.FechaYHora,
+			Descripcion:        r.Descripcion,
+			DentistaIDDentista: r.DentistaIDDentista,
+			PacienteIDPaciente: r.PacienteIDPaciente,
 		}
 		t, err := h.ts.Update(id, update)
 		if err != nil {
