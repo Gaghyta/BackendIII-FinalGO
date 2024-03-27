@@ -30,7 +30,11 @@ type Config struct {
 func main() {
 
 	// carga de archivo "env"
-	godotenv.Load(".env")
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatal("error cuando se carga el archivo .env")
+	}
 
 	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
