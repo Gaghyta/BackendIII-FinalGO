@@ -83,17 +83,16 @@ func (s *OdontologoSqlStore) GetByMatricula(matricula string) (domains.Odontolog
 
 	query := fmt.Sprintf("SELECT * FROM odontologos WHERE matricula = %s", matricula)
 	row := s.db.QueryRow(query)
-	fmt.Println(row)
+
 	err := row.Scan(&odontologoEncontrado.OdontologoId, &odontologoEncontrado.ApellidoOdontologo, &odontologoEncontrado.NombreOdontologo, &odontologoEncontrado.Matricula)
 	if err != nil {
 		return domains.Odontologo{}, err
 	}
-	fmt.Println(odontologoEncontrado)
+
 	return odontologoEncontrado, nil
 }
 
-
-func (s *OdontologoSqlStore) Create(o domains.Odontologo) error {
+func (s *OdontologoSqlStore) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	query := "INSERT INTO odontologos (apellido_odontologo, nombre_odontologo, matricula) VALUES (?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
@@ -105,7 +104,12 @@ func (s *OdontologoSqlStore) Create(o domains.Odontologo) error {
 		log.Fatal(err)
 	}
 
-	return nil
+	err = s.db.QueryRow("SELECT LAST_INSERT_ID()").Scan(&o.OdontologoId)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return o, nil
 }
 
 /* func (s *OdontologoSqlStore) Update(o domains.Odontologo) error {
@@ -147,12 +151,11 @@ func (s *OdontologoSqlStore) Update(id int, odontologoInput domains.Odontologo) 
 	if odontologoInput.Matricula != "" {
 		query += " matricula = '" + odontologoInput.Matricula + "',"
 	}
-	
 
 	query = query[0 : len(query)-1]
 	query += " WHERE odontologo_id = ?"
 
-	fmt.Println(query)
+
 	// actualizo el odontologo
 	_, err = s.db.Exec(query, id)
 
@@ -226,12 +229,12 @@ func (s *OdontologoSqlStore) Exists(matricula string) bool {
 
 func (s *PacienteSqlStore) Read(id int) (domains.Paciente, error) {
 	// Consulta para recuperar el paciente con el ID proporcionado
-	query := "SELECT nombre_paciente, pellido_opaciente, domicilio, dni, fecha_de_alta FROM pacientes WHERE paciente_id = ?"
+	query := "SELECT nombre_paciente, apellido_paciente, domicilio, dni, fecha_de_alta FROM pacientes WHERE paciente_id = ?"
 
 	// Ejecutar la consulta y recuperar los datos
 	var p domains.Paciente
-	err := s.db.QueryRow(query, id).Scan(&p.NombrePaciente, &p.ApellidoPaciente, &p.DomicilioPaciente,
-		&p.Dni, p.FechaDeAlta)
+	err := s.db.QueryRow(query, id).Scan(&p.NombrePaciente, &p.ApellidoPaciente, &p.DomicilioPaciente, &p.Dni, &p.FechaDeAlta)
+
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// El paciente con el ID proporcionado no fue encontrado
@@ -240,6 +243,7 @@ func (s *PacienteSqlStore) Read(id int) (domains.Paciente, error) {
 		// Ocurrió un error al ejecutar la consulta
 		return domains.Paciente{}, err
 	}
+	p.PacienteID = id
 
 	// Retornar los datos del paciente recuperado
 	return p, nil
@@ -265,8 +269,8 @@ func (s *PacienteSqlStore) GetByDNI(dni string) (domains.Paciente, error) {
 	return p, nil
 }
 
-func (s *PacienteSqlStore) Create(p domains.Paciente) error {
-	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES (?, ?, ?, ?, ?);"
+func (s *PacienteSqlStore) Create(p domains.Paciente) (domains.Paciente, error) {
+	query := "INSERT INTO pacientes (nombre_paciente, apellido_paciente, domicilio, dni, fecha_de_alta) VALUES (?, ?, ?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
@@ -277,24 +281,34 @@ func (s *PacienteSqlStore) Create(p domains.Paciente) error {
 		log.Fatal(err)
 	}
 
-	return nil
+
+	err = s.db.QueryRow("SELECT LAST_INSERT_ID()").Scan(&p.PacienteID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return p, nil
 }
 
-func (s *PacienteSqlStore) Update(p domains.Paciente) error {
-	query := "UPDATE pacientes SET nombre = ?, apellido = ?, domicilio = ?, dni = ?, fecha_de_alta = ? WHERE paciente_id = ?;"
+func (s *PacienteSqlStore) Update(id int, p domains.Paciente) (domains.Paciente, error) {
+	query := "UPDATE pacientes SET nombre_paciente = ?, apellido_paciente = ?, domicilio = ?, dni = ?, fecha_de_alta = ? WHERE paciente_id = ?;"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
-		return err
+		return domains.Paciente{},err
 	}
-	res, err := stmt.Exec(p.NombrePaciente, p.ApellidoPaciente, p.DomicilioPaciente, p.Dni, p.FechaDeAlta, p.PacienteID)
+
+	res, err := stmt.Exec(p.NombrePaciente, p.ApellidoPaciente, p.DomicilioPaciente, p.Dni, p.FechaDeAlta, id)
 	if err != nil {
-		return err
+		return domains.Paciente{},err
 	}
 	_, err = res.RowsAffected()
 	if err != nil {
-		return err
+		return domains.Paciente{},err
 	}
-	return nil
+
+	updatedPaciente, _ := s.Read(id)
+
+	return  updatedPaciente, nil
 }
 
 func (s *PacienteSqlStore) Delete(id int) error {

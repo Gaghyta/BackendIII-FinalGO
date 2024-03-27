@@ -1,6 +1,8 @@
 package paciente
 
 import (
+	// "fmt"
+
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 )
 
@@ -47,6 +49,7 @@ func (s *service) Create(o domains.Paciente) (domains.Paciente, error) {
 }
 func (s *service) Update(id int, uP domains.Paciente) (domains.Paciente, error) {
 	o, err := s.r.GetByID(id)
+
 	if err != nil {
 		return domains.Paciente{}, err
 	}
@@ -76,6 +79,7 @@ func (s *service) Delete(id int) error {
 
 func (s *service) Patch(id int, uP domains.Paciente) (domains.Paciente, error) {
 	p, err := s.r.GetByID(id)
+
 	if err != nil {
 		return domains.Paciente{}, err
 	}
@@ -94,7 +98,7 @@ func (s *service) Patch(id int, uP domains.Paciente) (domains.Paciente, error) {
 	if uP.FechaDeAlta != "" {
 		p.FechaDeAlta = uP.FechaDeAlta
 	}
-	p, err = s.r.Update(id, p)
+	p, err = s.r.Update(id, uP)
 	if err != nil {
 		return domains.Paciente{}, err
 	}

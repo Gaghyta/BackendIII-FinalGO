@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
@@ -72,6 +73,7 @@ func (h *pacienteHandler) Post() gin.HandlerFunc {
 			web.Failure(ctx, 400, err)
 			return
 		}
+
 		web.Success(ctx, 201, p)
 	}
 }
@@ -159,7 +161,8 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 			Dni:               r.Dni,
 			FechaDeAlta:       r.FechaDeAlta,
 		}
-		p, err := h.ps.Patch(id, update)
+		fmt.Println(update)
+		p, err := h.ps.Update(id, update)
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": err.Error()})
 			return

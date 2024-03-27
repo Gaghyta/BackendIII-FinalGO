@@ -49,14 +49,14 @@ func (r *repository) GetByDNI(dni string) (domains.Paciente, error) {
 
 
 func (r *repository) Create(o domains.Paciente) (domains.Paciente, error) {
-	if !r.storage.Exists(o.Dni) {
+	if r.storage.Exists(o.Dni) {
 		return domains.Paciente{}, errors.New("el DNI ya existe en nuestra base de datos")
 	}
-	err := r.storage.Create(o)
+	p, err := r.storage.Create(o)
 	if err != nil {
 		return domains.Paciente{}, errors.New("error guardando paciente")
 	}
-	return o, nil
+	return p, nil
 }
 
 func (r *repository) Delete(id int) error {
@@ -71,9 +71,10 @@ func (r *repository) Update(id int, o domains.Paciente) (domains.Paciente, error
 	if r.storage.Exists(o.Dni) {
 		return domains.Paciente{}, errors.New("el DNI ingresado ya existe")
 	}
-	err := r.storage.Update(o)
+	
+	modificado, err := r.storage.Update(id, o)
 	if err != nil {
 		return domains.Paciente{}, errors.New("error modificando el paciente")
 	}
-	return o, nil
+	return modificado, nil
 }

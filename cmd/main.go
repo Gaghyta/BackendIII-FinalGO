@@ -58,11 +58,11 @@ func main() {
 	pacientes := r.Group("/pacientes")
 
 	{
-		pacientes.GET(":paciente_id", pacienteHandler.GetByID())
+		pacientes.GET("/:paciente_id", pacienteHandler.GetByID())
 		pacientes.POST("", pacienteHandler.Post())
-		pacientes.DELETE(":paciente_id", pacienteHandler.DeleteByID())
-		pacientes.PATCH(":paciente_id", pacienteHandler.Patch())
-		pacientes.PUT(":paciente_id", pacienteHandler.Put())
+		pacientes.DELETE("/:paciente_id", pacienteHandler.DeleteByID())
+		pacientes.PATCH("/:paciente_id", pacienteHandler.Patch())
+		pacientes.PUT("/:paciente_id", pacienteHandler.Put())
 	}
 
 	storageTurno := turnoStore.NewTurnoSqlStore(bd)

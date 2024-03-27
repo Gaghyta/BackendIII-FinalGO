@@ -1,3 +1,12 @@
+-- Delete user if already exists
+DROP USER IF EXISTS 'user1'@'localhost';
+
+-- Create user with all privileges
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'secret_password';
+GRANT ALL PRIVILEGES ON *.* TO 'user1'@'localhost';
+-- 
+
+
 CREATE DATABASE  IF NOT EXISTS `turnos-odontologia` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `turnos-odontologia`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
@@ -40,7 +49,7 @@ CREATE TABLE `odontologos` (
 
 LOCK TABLES `odontologos` WRITE;
 /*!40000 ALTER TABLE `odontologos` DISABLE KEYS */;
-INSERT INTO `odontologos` (`apellido_odontologo`, `nombre_odontoogo`, `matricula`) VALUES
+INSERT INTO `odontologos` (`apellido_odontologo`, `nombre_odontologo`, `matricula`) VALUES
   ('Pérez', 'Juan', '123456'),
   ('González', 'María', '654321'),
   ('Fernández', 'Pedro', '987654'),
@@ -80,21 +89,21 @@ CREATE TABLE `pacientes` (
 LOCK TABLES `pacientes` WRITE;
 /*!40000 ALTER TABLE `pacientes` DISABLE KEYS */;
 INSERT INTO `pacientes` (`nombre_paciente`, `apellido_paciente`, `domicilio`, `dni`, `fecha_de_alta`) VALUES
-  ('Juan', 'Pérez', 'Calle 123', '12345678', '2023-01-01'),
-  ('María', 'González', 'Calle 456', '87654321', '2023-01-02'),
-  ('Pedro', 'Fernández', 'Calle 789', '98765432', '2023-01-03'),
-  ('Ana', 'García', 'Calle 101112', '45678912', '2023-01-04'),
+  ('Juan', 'Pérez', 'Calle 123', '12345778', '2023-01-01'),
+  ('María', 'González', 'Calle 456', '87614321', '2023-01-02'),
+  ('Pedro', 'Fernández', 'Calle 789', '98715432', '2023-01-03'),
+  ('Ana', 'García', 'Calle 101112', '45671912', '2023-01-04'),
   ('José', 'López', 'Calle 131415', '11223345', '2023-01-05'),
-  ('María', 'Rodríguez', 'Calle 161718', '22334456', '2023-01-06'),
-  ('Juan', 'Martínez', 'Calle 192021', '33445567', '2023-01-07'),
-  ('Ana', 'Sánchez', 'Calle 222324', '44556678', '2023-01-08'),
-  ('José', 'Romero', 'Calle 252627', '55667789', '2023-01-09'),
+  ('María', 'Rodríguez', 'Calle 161718', '22234456', '2023-01-06'),
+  ('Juan', 'Martínez', 'Calle 192021', '33405567', '2023-01-07'),
+  ('Ana', 'Sánchez', 'Calle 222324', '44554678', '2023-01-08'),
+  ('José', 'Romero', 'Calle 252627', '55667780', '2023-01-09'),
   ('María', 'Alvarez', 'Calle 282930', '66778890', '2023-01-10'),
   ('Juan', 'Castro', 'Calle 313233', '77889901', '2023-01-11'),
   ('Ana', 'Gutiérrez', 'Calle 343536', '88990012', '2023-01-12'),
   ('José', 'Ramírez', 'Calle 373839', '99001123', '2023-01-13'),
   ('María', 'Díaz', 'Calle 404142', '00112234', '2023-01-14'),
-  ('Juan', 'Flores', 'Calle 434445', '11223345', '2023-01-15'),
+  ('Juan', 'Flores', 'Calle 434445', '11220345', '2023-01-15'),
   ('Ana', 'Herrera', 'Calle 464748', '22334456', '2023-01-16'),
   ('José', 'Vega', 'Calle 495051', '33445567', '2023-01-17'),
   ('María', 'Torres', 'Calle 525354', '44556678', '2023-01-18'),
