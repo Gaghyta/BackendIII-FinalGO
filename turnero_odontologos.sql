@@ -36,7 +36,7 @@ CREATE TABLE `pacientes` (
   `fecha_de_alta` varchar(10) NOT NULL,
   PRIMARY KEY (`paciente_id`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) 
+) ;
 
 INSERT INTO `pacientes` (`nombre_paciente`, `apellido_paciente`, `domicilio`, `dni`, `fecha_de_alta`) VALUES
   ('Juan', 'Pérez', 'Calle 123', '12345678', '2023-01-01'),
