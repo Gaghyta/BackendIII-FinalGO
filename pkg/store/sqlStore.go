@@ -409,7 +409,7 @@ func (s *TurnoSqlStore) Delete(id int) error {
 func (s *TurnoSqlStore) Exists(fecha_y_hora string, odontologo int) bool {
 	var exists bool
 	var id int
-	query := "SELECT turnos_id FROM pacientes WHERE fecha_y_hora = ?;"
+	query := "SELECT turno_id FROM pacientes WHERE fecha_y_hora = ?;"
 	row := s.db.QueryRow(query, fecha_y_hora)
 	err := row.Scan(&id)
 	if err != nil {

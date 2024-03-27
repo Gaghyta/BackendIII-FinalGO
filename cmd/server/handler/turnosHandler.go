@@ -31,7 +31,7 @@ func NewTurnoHandler(t turnos.Service, p paciente.Service, o odontologos.Service
 // GetById obtiene un turno por id
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idParam := c.Param("turnos_id")
+		idParam := c.Param("turno_id")
 
 		id, err := strconv.Atoi(idParam)
 
@@ -154,7 +154,7 @@ func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 
 		//genero la estructura que espero recibir en el POST
 		type Turno_dni_mat struct {
-			TurnosId          int    `json:"turnos_id"`
+			TurnosId          int    `json:"turno_id"`
 			FechaYHora        string `json:"fecha_y_hora"`
 			Descripcion       string `json:"descripcion"`
 			MatriculaDentista string `json:"matricula_dentista"`
@@ -225,7 +225,7 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 		}
 
 		// Obtener el Id del turno de la URL
-		idParam := c.Param("turnos_id")
+		idParam := c.Param("turno_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("id inválido"))
@@ -268,7 +268,7 @@ func (h *turnoHandler) DeleteByID() gin.HandlerFunc {
 		}
 
 		// Obtener el Id del turno de la URL
-		idParam := c.Param("turnos_id")
+		idParam := c.Param("turno_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("ID inválido"))
@@ -306,7 +306,7 @@ func (h *turnoHandler) Patch() gin.HandlerFunc {
 		}
 
 		var r Request
-		idParam := c.Param("turnos_id")
+		idParam := c.Param("turno_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			c.JSON(400, gin.H{"error": "invalid id"})

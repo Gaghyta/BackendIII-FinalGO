@@ -162,7 +162,7 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		NombrePaciente    string `json:"nombre_paciente,omitempty"`
 		ApellidoPaciente  string `json:"apellido_paciente,omitempty"`
-		DomicilioPaciente string `json:"domicilio_paciente,omitempty"`
+		DomicilioPaciente string `json:"domicilio,omitempty"`
 		Dni               string `json:"dni,omitempty"`
 		FechaDeAlta       string `json:"fecha_de_alta,omitempty"`
 	}
