@@ -10,7 +10,7 @@ import (
 func Authenticate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := os.Getenv("TOKEN")
-		tokenHeader := ctx.GetHeader("Postman-Token")
+		tokenHeader := ctx.GetHeader("TOKEN")
 
 		if tokenHeader != token {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
