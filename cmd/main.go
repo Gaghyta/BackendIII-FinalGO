@@ -9,7 +9,6 @@ import (
 	pacienteStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	turnoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 
 	odontologos "github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	pacientes "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
@@ -17,15 +16,16 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/pkg/middleware"
+	"github.com/joho/godotenv"
 )
 
-type Config struct {
+/* type Config struct {
 	DBUsername string `json:"db_username"`
 	DBPassword string `json:"db_password"`
 	DBHost     string `json:"db_host"`
 	DBPort     string `json:"db_port"`
 	DBName     string `json:"db_name"`
-}
+} */
 
 func main() {
 
@@ -36,13 +36,13 @@ func main() {
 		log.Fatal("error cuando se carga el archivo .env")
 	}
 
-	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
+	bd, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
-	defer db.Close()
+	defer bd.Close()
 
-	storageOdontologo := odontologoStore.NewOdontologoSqlStore(db)
+	storageOdontologo := odontologoStore.NewOdontologoSqlStore(bd)
 	repoOdontologos := odontologos.NewRepository(storageOdontologo)
 	serviceOdontologos := odontologos.NewService(repoOdontologos)
 	odontologoHandler := handler.NewOdontologoHandler(serviceOdontologos)
@@ -61,7 +61,7 @@ func main() {
 		odontologos.PUT("/:odontologo_id", middleware.Authenticate(), odontologoHandler.Put())
 	}
 
-	storagePaciente := pacienteStore.NewPacienteSqlStore(db)
+	storagePaciente := pacienteStore.NewPacienteSqlStore(bd)
 	repoPacientes := pacientes.NewRepository(storagePaciente)
 	servicePacientes := pacientes.NewService(repoPacientes)
 	pacienteHandler := handler.NewPacienteHandler(servicePacientes)
@@ -76,7 +76,7 @@ func main() {
 		pacientes.PUT(":paciente_id", middleware.Authenticate(), pacienteHandler.Put())
 	}
 
-	storageTurno := turnoStore.NewTurnoSqlStore(db)
+	storageTurno := turnoStore.NewTurnoSqlStore(bd)
 	repoTurno := turnos.NewRepository(storageTurno)
 	serviceTurnos := turnos.NewService(repoTurno)
 	turnosHandler := handler.NewTurnoHandler(serviceTurnos, servicePacientes, serviceOdontologos)
@@ -84,7 +84,7 @@ func main() {
 	turnos := r.Group("/turnos")
 
 	{
-		//turnos.GET(":turno_id", turnosHandler.GetByID())
+		turnos.GET(":turno_id", turnosHandler.GetByID())
 		turnos.GET(":dni", turnosHandler.GetByDNI())
 		turnos.POST("", middleware.Authenticate(), turnosHandler.Post())
 		turnos.POST("/dni-matricula", middleware.Authenticate(), turnosHandler.PostWithDniAndMatricula())
