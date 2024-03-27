@@ -26,7 +26,7 @@ type Config struct {
 
 func main() {
 
-	bd, err := sql.Open("mysql", "root:yokit@11@tcp(localhost:3306)/turnos-odontologia")
+	bd, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
