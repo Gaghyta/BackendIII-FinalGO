@@ -45,12 +45,12 @@ func (r *repository) Create(o domains.Odontologo) (domains.Odontologo, error) {
 	if r.storage.Exists(o.Matricula) {
 		return domains.Odontologo{}, errors.New("la matrícula de este odontologo ya existe en nuestra base de datos")
 	}
-	err := r.storage.Create(o)
+	nO, err := r.storage.Create(o)
 	if err != nil {
 		return domains.Odontologo{}, errors.New("error guardando odontólogo")
 	}
 
-	return o, nil
+	return nO, nil
 }
 
 func (r *repository) Update(id int, uO domains.Odontologo) (domains.Odontologo, error) {
