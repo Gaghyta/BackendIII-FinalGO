@@ -1,6 +1,6 @@
 package middleware
 
-/* import (
+import (
 	"fmt"
 	"time"
 
@@ -25,4 +25,4 @@ func Logger() gin.HandlerFunc {
 		fmt.Printf("\nverb: %v\ntime: %v\npath: %v\nsize: %v\ntime tx: %v\n", verb, time1, path, size, time2)
 		c.Next()
 	}
-}*/
+}
