@@ -11,7 +11,7 @@ import (
 type Repository interface {
 	GetByID(id int) (domains.Odontologo, error)
 	GetByMatricula(matricula string) (domains.Odontologo, error)
-	Create(p domains.Odontologo) (domains.Odontologo, error)
+	Create(o domains.Odontologo) (domains.Odontologo, error)
 	Update(id int, uO domains.Odontologo) (domains.Odontologo, error)
 	Delete(id int) error
 }
