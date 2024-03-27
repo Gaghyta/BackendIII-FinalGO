@@ -68,7 +68,7 @@ func (r *repository) Delete(id int) error {
 }
 
 func (r *repository) Update(id int, o domains.Turno) (domains.Turno, error) {
-	if !r.storage.Exists(o.FechaYHora, o.DentistaIDDentista) {
+	if r.storage.Exists(o.FechaYHora, o.DentistaIDDentista) {
 		return domains.Turno{}, errors.New("ya existe un turno con esa hora y odontologo")
 	}
 	t, err := r.storage.Update(id, o)
