@@ -28,13 +28,13 @@ type Config struct {
 
 func main() {
 
-	bd, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
 		log.Fatal("Error conectando a la base de datos:", err)
 	}
-	defer bd.Close()
+	defer db.Close()
 
-	storageOdontologo := odontologoStore.NewOdontologoSqlStore(bd)
+	storageOdontologo := odontologoStore.NewOdontologoSqlStore(db)
 	repoOdontologos := odontologos.NewRepository(storageOdontologo)
 	serviceOdontologos := odontologos.NewService(repoOdontologos)
 	odontologoHandler := handler.NewOdontologoHandler(serviceOdontologos)
@@ -53,7 +53,7 @@ func main() {
 		odontologos.PUT("/:odontologo_id", middleware.Authenticate(), odontologoHandler.Put())
 	}
 
-	storagePaciente := pacienteStore.NewPacienteSqlStore(bd)
+	storagePaciente := pacienteStore.NewPacienteSqlStore(db)
 	repoPacientes := pacientes.NewRepository(storagePaciente)
 	servicePacientes := pacientes.NewService(repoPacientes)
 	pacienteHandler := handler.NewPacienteHandler(servicePacientes)
@@ -68,7 +68,7 @@ func main() {
 		pacientes.PUT(":paciente_id", middleware.Authenticate(), pacienteHandler.Put())
 	}
 
-	storageTurno := turnoStore.NewTurnoSqlStore(bd)
+	storageTurno := turnoStore.NewTurnoSqlStore(db)
 	repoTurno := turnos.NewRepository(storageTurno)
 	serviceTurnos := turnos.NewService(repoTurno)
 	turnosHandler := handler.NewTurnoHandler(serviceTurnos, servicePacientes, serviceOdontologos)
