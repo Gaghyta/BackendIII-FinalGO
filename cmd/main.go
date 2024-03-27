@@ -9,6 +9,7 @@ import (
 	pacienteStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	turnoStore "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 
 	odontologos "github.com/Gaghyta/BackendIIIFinalGO/internal/odontologos"
 	pacientes "github.com/Gaghyta/BackendIIIFinalGO/internal/pacientes"
@@ -27,6 +28,9 @@ type Config struct {
 }
 
 func main() {
+
+	// carga de archivo "env"
+	godotenv.Load(".env")
 
 	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/turnos-odontologia")
 	if err != nil {
