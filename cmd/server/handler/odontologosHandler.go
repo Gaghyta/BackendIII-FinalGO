@@ -28,7 +28,7 @@ func NewOdontologoHandler(s odontologos.Service) *odontologoHandler {
 // Get obtiene un odontólogo por id
 func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println(1)
+
 		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
@@ -48,7 +48,7 @@ func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 // validateEmptyOdontologo valida que los campos no esten vacios
 func validateEmptyOdontologo(odontologo *domains.Odontologo) (bool, error) {
 	if odontologo.NombreOdontologo == "" || odontologo.ApellidoOdontologo == "" || odontologo.Matricula == "" {
-		return false, errors.New("fields can't be empty")
+		return false, errors.New("los campos no pueden estar vacíos")
 	}
 
 	return true, nil
@@ -70,7 +70,7 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 		var odontologo domains.Odontologo
 		err := c.ShouldBindJSON(&odontologo)
 		if err != nil {
-			web.Failure(c, 400, errors.New("invalid json"))
+			web.Failure(c, 400, errors.New("json inválido"))
 			return
 		}
 
@@ -97,7 +97,7 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 		idParam := c.Param("odontologo_id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
-			web.Failure(c, 400, errors.New("invalid ID"))
+			web.Failure(c, 400, errors.New("id inválido"))
 			return
 		}
 
@@ -105,7 +105,7 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 		var odontologo domains.Odontologo
 		err = c.ShouldBindJSON(&odontologo)
 		if err != nil {
-			web.Failure(c, 400, errors.New("invalid JSON"))
+			web.Failure(c, 400, errors.New("json inválido"))
 			return
 		}
 
