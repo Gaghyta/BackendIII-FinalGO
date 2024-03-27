@@ -5,8 +5,6 @@ import "github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 type StoreOdontologoInterface interface {
 	// Read devuelve un odontólogo por su id
 	Read(id int) (domains.Odontologo, error)
-	// GetByMatricula devuelve el id a partir de la matrícula
-	GetByMatricula(matricula string) (domains.Odontologo, error)
 	// Create agrega un nuevo odontólogo
 	Create(odontologo domains.Odontologo) error
 	// Update actualiza un odontólogo
@@ -15,6 +13,7 @@ type StoreOdontologoInterface interface {
 	Delete(id int) error
 	// Exists verifica si un odontólogo existe
 	Exists(matricula string) bool
+	GetByMatricula(matricula string) (domains.Odontologo, error)
 }
 
 type StorePacienteInterface interface {
