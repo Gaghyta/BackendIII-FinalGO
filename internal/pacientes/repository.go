@@ -2,6 +2,7 @@ package paciente
 
 import (
 	"errors"
+	// "fmt"
 
 	"github.com/Gaghyta/BackendIIIFinalGO/internal/domains"
 	Store "github.com/Gaghyta/BackendIIIFinalGO/pkg/store"
@@ -68,9 +69,6 @@ func (r *repository) Delete(id int) error {
 }
 
 func (r *repository) Update(id int, o domains.Paciente) (domains.Paciente, error) {
-	if r.storage.Exists(o.Dni) {
-		return domains.Paciente{}, errors.New("el DNI ingresado ya existe")
-	}
 	
 	modificado, err := r.storage.Update(id, o)
 	if err != nil {

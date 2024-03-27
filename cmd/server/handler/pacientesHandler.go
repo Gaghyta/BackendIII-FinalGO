@@ -138,10 +138,11 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		NombrePaciente    string `json:"nombre_paciente,omitempty"`
 		ApellidoPaciente  string `json:"apellido_paciente,omitempty"`
-		DomicilioPaciente string `json:"domicilio_paciente,omitempty"`
+		Domicilio string `json:"domicilio,omitempty"`
 		Dni               string `json:"dni,omitempty"`
 		FechaDeAlta       string `json:"fecha_de_alta,omitempty"`
 	}
+	
 	return func(ctx *gin.Context) {
 		var r Request
 		idParam := ctx.Param("paciente_id")
@@ -154,14 +155,17 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 			ctx.JSON(400, gin.H{"error": "invalid json"})
 			return
 		}
+
+		fmt.Println(r)
+
 		update := domains.Paciente{
 			NombrePaciente:    r.NombrePaciente,
 			ApellidoPaciente:  r.ApellidoPaciente,
-			DomicilioPaciente: r.ApellidoPaciente,
+			DomicilioPaciente: r.Domicilio,
 			Dni:               r.Dni,
 			FechaDeAlta:       r.FechaDeAlta,
 		}
-		fmt.Println(update)
+
 		p, err := h.ps.Update(id, update)
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": err.Error()})
