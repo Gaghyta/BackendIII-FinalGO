@@ -330,9 +330,9 @@ func (s *TurnoSqlStore) GetByDNI(dni string) (domains.Turno, error) {
 	row := s.db.QueryRow(query, dni)
 	err := row.Scan(&vpaciente.PacienteID)
 	if err != nil {
-		return domains.Turno{}, errors.New("no existen pacientes con ese DNI")
+		return domains.Turno{}, errors.New("No existen pacientes con ese DNI")
 	}
-
+	fmt.Println(vpaciente.PacienteID)
 	// Ejecutar la consulta y recuperar los datos
 	var t domains.Turno
 	query = "SELECT * FROM turnos WHERE paciente_id_paciente = ? LIMIT 1"
@@ -350,25 +350,24 @@ func (s *TurnoSqlStore) GetByDNI(dni string) (domains.Turno, error) {
 	return t, nil
 }
 
-func (s *TurnoSqlStore) Create(p domains.Turno) (domains.Turno, error) {
+func (s *TurnoSqlStore) Create(t domains.Turno) (domains.Turno, error) {
 	query := "INSERT INTO turnos (fecha_y_hora, descripcion, dentista_id_dentista, paciente_id_paciente) VALUES (?, ?, ?, ?);"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
-	var t domains.Turno
 
 	_, err = stmt.Exec(t.FechaYHora, t.Descripcion, t.DentistaIDDentista, t.PacienteIDPaciente)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = s.db.QueryRow("SELECT LAST_INSERT_ID()").Scan(&p.TurnosId)
+	err = s.db.QueryRow("SELECT LAST_INSERT_ID()").Scan(&t.TurnosId)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return p, nil
+	return t, nil
 }
 
 func (s *TurnoSqlStore) Update(id int, t domains.Turno) (domains.Turno, error) {
