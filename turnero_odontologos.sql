@@ -59,12 +59,6 @@ INSERT INTO `pacientes` (`nombre_paciente`, `apellido_paciente`, `domicilio`, `d
   ('María', 'Torres', 'Calle 525354', '3333333', '2023-01-18'),
   ('Juan', 'Flores', 'Calle 555657', '4444444', '2023-01-19');
 
-  /* claves duplicadas incorrectas */
-  /* ('Juan', 'Flores', 'Calle 434445', '11223345', '2023-01-15'),
-  ('Ana', 'Herrera', 'Calle 464748', '22334456', '2023-01-16'),
-  ('José', 'Vega', 'Calle 495051', '33445567', '2023-01-17'),
-  ('María', 'Torres', 'Calle 525354', '44556678', '2023-01-18'),
-  ('Juan', 'Flores', 'Calle 555657', '55667789', '2023-01-19'); */
 
 
 DROP TABLE IF EXISTS `turnos`;
@@ -77,3 +71,9 @@ CREATE TABLE `turnos` (
   `paciente_id_paciente` int NOT NULL,
   PRIMARY KEY (`turno_id`)
 ); 
+
+INSERT INTO `turnos`(`fecha_y_hora`,`descripcion`, `dentista_id_dentista`,`paciente_id_paciente`) VALUES 
+('21/05/2022 11:22', 'control', 3, 4),
+('17/03/2024 15:10', 'ortodoncia', 6, 8),
+('15/12/2023 08:30', 'control de ortodoncia', 1, 4),
+('07/07/2023 16:30', 'consulta', 2, 8);
