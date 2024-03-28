@@ -25,7 +25,7 @@ func NewPacienteHandler(p paciente.Service) *pacienteHandler {
 // GetByID godoc
 // @Summary Get paciente
 // @Description obtiene un paciente por id si se tiene los permisos de usuario adecuados
-// @Tags domains.paciente
+// @Tags domains.pacienteDomain
 // @Param id path int true "id del paciente"
 // @Accept json
 // @Produce json
@@ -64,7 +64,7 @@ func validateEmptyPaciente(paciente *domains.Paciente) (bool, error) {
 // Post godoc
 // @Summary Crear paciente
 // @Description Publica un nuevo paciente si se tiene los permisos de usuario adecuados
-// @Tags domains.paciente
+// @Tags domains.pacienteDomain
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -107,7 +107,7 @@ func (h *pacienteHandler) Post() gin.HandlerFunc {
 // Put godoc
 // @Summary Modifica pacientes
 // @Description Modifica un paciente por su id si se tiene los permisos de usuario adecuados
-// @Tags domains.paciente
+// @Tags domains.pacienteDomain
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -161,7 +161,7 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 // DeleteById godoc
 // @Summary Delete paciente
 // @Description Elima un paciente por su id  si se tiene los permisos de usuario adecuados
-// @Tags domains.paciente
+// @Tags domains.pacienteDomain
 // @Param id path int true "id del paciente"
 // @Accept json
 // @Produce json
@@ -204,7 +204,7 @@ func (h *pacienteHandler) DeleteByID() gin.HandlerFunc {
 // Patch godoc
 // @Summary Patch paciente
 // @Description Actualiza uno o varios campos del paciente si se tiene los permisos de usuario adecuados
-// @Tags domains.paciente
+// @Tags domains.pacienteDomain
 // @Param id path int true "id del paciente"
 // @Accept json
 // @Produce json
