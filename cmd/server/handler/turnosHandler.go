@@ -28,7 +28,18 @@ func NewTurnoHandler(t turnos.Service, p paciente.Service, o odontologos.Service
 	}
 }
 
-// GetById obtiene un turno por id
+// GetByID godoc
+// @Summary obtiene un turno por id
+// @Description obtiene un turno por id
+// @Tags domains.turnoDomain
+// @Param id path int true "id del turno"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [get]
+
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("turno_id")
@@ -47,7 +58,18 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-// GetByDNI obtiene un turno por dni
+// GetByDNI godoc
+// @Summary Get turno by DNI
+// @Description obtiene un turno por dni
+// @Tags domains.turnoDomain
+// @Param dni path int true "dni del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/dni [get]
+
 func (h *turnoHandler) GetByDNI() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		dniParam := c.Query("dni")
@@ -104,6 +126,16 @@ func validateEmptyTurno(turno *domains.Turno) (bool, error) {
 	return true, nil
 }
 
+// Post godoc
+// @Summary Crea un turno
+// @Description Create a nuevo turno con los campos del turno si se tiene los permisos de usuario adecuados
+// @Tags domains.turnoDomain
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos [post]
 func (h *turnoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -139,6 +171,16 @@ func (h *turnoHandler) Post() gin.HandlerFunc {
 	}
 }
 
+// PostWithDniAndMatricula godoc
+// @Summary Crea un turno con dni y matricula
+// @Description Create nuevo turno con el DNI del paciente y la Matricula del odontólogo si se tiene los permisos de usuario adecuados
+// @Tags domains.turnoDomain
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos [post]
 func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -211,7 +253,17 @@ func (h *turnoHandler) PostWithDniAndMatricula() gin.HandlerFunc {
 	}
 }
 
-// put modifica un turno
+// Put godoc
+// @Summary Modifica turno
+// @Description Modifica un turno por su ID
+// @Tags domains.turnoDomain
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [put]
+
 func (h *turnoHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -255,6 +307,17 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 	}
 }
 
+// DeleteById godoc
+// @Summary Delete turno
+// @Description Elimina turno por su ID si se tiene los permisos de usuario adecuados
+// @Tags domains.turnoDomain
+// @Param id path int true "id del turno"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [delete]
 func (h *turnoHandler) DeleteByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -286,7 +349,18 @@ func (h *turnoHandler) DeleteByID() gin.HandlerFunc {
 	}
 }
 
-// Patch actualiza uno o varios campos
+// Patch godoc
+// @Summary actualiza  campos
+// @Description actualiza uno o varios campos si se tiene los permisos de usuario adecuados
+// @Tags domains.turnoDomain
+// @Param id path int true "id del turno"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [patch]
+
 func (h *turnoHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		FechaYHora         string `json:"fecha_y_hora,omitempty"`
