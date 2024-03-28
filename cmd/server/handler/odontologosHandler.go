@@ -67,8 +67,8 @@ func validateEmptyOdontologo(odontologo *domains.Odontologo) (bool, error) {
 
 // Post godoc
 // @Summary Post odontologo
-// @Description Create a new odontologo
-// @Tags domains.odontologo
+// @Description Crea un nuevo odontologo si se tiene los permisos de usuario adecuados
+// @Tags domains.odontologoDomain
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -112,8 +112,8 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 
 // Put godoc
 // @Summary Put odontologo
-// @Description modifica un odontólogo por su id
-// @Tags domain.odontologo
+// @Description modifica un odontólogo por su id si se tiene los permisos de usuario adecuados
+// @Tags @Tags domains.odontologoDomain
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -169,8 +169,8 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 
 // DeleteById godoc
 // @Summary DeletById odontologo
-// @Description Elima un odontólogo por su id
-// @Tags domain.odontologo
+// @Description Elimina un odontólogo por su id si se tiene los permisos de usuario adecuados
+// @Tags domains.odontologoDomain
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -209,8 +209,8 @@ func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 
 // Patch godoc
 // @Summary Patch odontologo
-// @Description Mofica datos en los campos de odontologo mediante su id
-// @Tags domain.odontologo
+// @Description Mofica datos en los campos de odontologo mediante su id si se tiene los permisos de usuario adecuados
+// @Tags domains.odontologoDomain
 // @Param id path int true "id del odontologo"
 // @Accept json
 // @Produce json
