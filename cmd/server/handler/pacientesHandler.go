@@ -22,7 +22,18 @@ func NewPacienteHandler(p paciente.Service) *pacienteHandler {
 	}
 }
 
-// GetById obtiene un paciente por id
+// GetByID godoc
+// @Summary Get paciente
+// @Description obtiene un paciente por id si se tiene los permisos de usuario adecuados
+// @Tags domains.paciente
+// @Param id path int true "id del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [get]
+
 func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("paciente_id")
@@ -49,6 +60,17 @@ func validateEmptyPaciente(paciente *domains.Paciente) (bool, error) {
 	}
 	return true, nil
 }
+
+// Post godoc
+// @Summary Crear paciente
+// @Description Publica un nuevo paciente si se tiene los permisos de usuario adecuados
+// @Tags domains.paciente
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes [post]
 
 func (h *pacienteHandler) Post() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -82,7 +104,17 @@ func (h *pacienteHandler) Post() gin.HandlerFunc {
 	}
 }
 
-// put modifica un paciente
+// Put godoc
+// @Summary Modifica pacientes
+// @Description Modifica un paciente por su id si se tiene los permisos de usuario adecuados
+// @Tags domains.paciente
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [put]
+
 func (h *pacienteHandler) Put() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("TOKEN")
@@ -126,6 +158,18 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 	}
 }
 
+// DeleteById godoc
+// @Summary Delete paciente
+// @Description Elima un paciente por su id  si se tiene los permisos de usuario adecuados
+// @Tags domains.paciente
+// @Param id path int true "id del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [delete]
+
 func (h *pacienteHandler) DeleteByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("TOKEN")
@@ -157,7 +201,18 @@ func (h *pacienteHandler) DeleteByID() gin.HandlerFunc {
 	}
 }
 
-// Patch actualiza uno o varios campos
+// Patch godoc
+// @Summary Patch paciente
+// @Description Actualiza uno o varios campos del paciente si se tiene los permisos de usuario adecuados
+// @Tags domains.paciente
+// @Param id path int true "id del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [patch]
+
 func (h *pacienteHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		NombrePaciente    string `json:"nombre_paciente,omitempty"`
