@@ -25,7 +25,18 @@ func NewOdontologoHandler(s odontologos.Service) *odontologoHandler {
 	}
 }
 
-// Get obtiene un odontólogo por id
+// GetByID godoc
+// @Summary Get odontologo
+// @Description obtiene un odontólogo por id
+// @Tags domain.odontologo
+// @Param id path int true "id del odontologo"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [get]
+
 func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -54,7 +65,17 @@ func validateEmptyOdontologo(odontologo *domains.Odontologo) (bool, error) {
 	return true, nil
 }
 
-// Post crea un nuevo odontólogo
+// Post godoc
+// @Summary Post odontologo
+// @Description Create a new odontologo
+// @Tags domains.odontologo
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos [post]
+
 func (h *odontologoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -89,7 +110,17 @@ func (h *odontologoHandler) Post() gin.HandlerFunc {
 	}
 }
 
-// Put modifica un odontólogo
+// Put godoc
+// @Summary Put odontologo
+// @Description modifica un odontólogo por su id
+// @Tags domain.odontologo
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [put]
+
 func (h *odontologoHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -136,6 +167,16 @@ func (h *odontologoHandler) Put() gin.HandlerFunc {
 	}
 }
 
+// DeleteById godoc
+// @Summary DeletById odontologo
+// @Description Elima un odontólogo por su id
+// @Tags domain.odontologo
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [delete]
 func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -165,6 +206,18 @@ func (h *odontologoHandler) DeleteByID() gin.HandlerFunc {
 		web.Success(c, 201, "Odontólogo eliminado exitosamente")
 	}
 }
+
+// Patch godoc
+// @Summary Patch odontologo
+// @Description Mofica datos en los campos de odontologo mediante su id
+// @Tags domain.odontologo
+// @Param id path int true "id del odontologo"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [patch]
 
 func (h *odontologoHandler) Patch() gin.HandlerFunc {
 
