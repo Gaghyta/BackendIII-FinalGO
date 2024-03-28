@@ -1,3 +1,13 @@
+// @title Grupo Antonini-Dago Certified Tech Developer
+// @version 1.0
+// @description Esta api maneja un servicio de turnos para una clinica odontológica, manejando los datos de pacientes y odontologos
+
+// @contact.name Antonini y Dagoberto
+// @contact.url https://www.linkedin.com/in/carlaantonini/ https://www.linkedin.com/in/gustavo-dagoberto/
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
 package main
 
 import (
