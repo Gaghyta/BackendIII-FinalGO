@@ -25,7 +25,7 @@ func NewOdontologoHandler(s odontologos.Service) *odontologoHandler {
 	}
 }
 
-// GetByID godoc
+//GetByID godoc
 // @Summary Get odontologo
 // @Description obtiene un odontólogo por id
 // @Tags domain.odontologo
